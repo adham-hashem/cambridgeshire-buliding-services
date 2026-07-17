@@ -101,7 +101,7 @@ export function HomePage() {
       const [sr, pr, tr, jr, tt, wc] = await Promise.all([
         supabase.from('services').select('*').eq('published', true).order('display_order').limit(8),
         supabase.from('projects').select('*').eq('status', 'published').order('created_at', { ascending: false }).limit(4),
-        supabase.from('testimonials').select('*').eq('published', true).eq('featured', true).limit(3),
+        supabase.from('testimonials').select('*').order('created_at', { ascending: false }).limit(3),
         supabase.from('garden_journal').select('*').eq('published', true).order('published_at', { ascending: false }).limit(3),
         supabase.from('trust_items').select('*').eq('published', true).order('display_order'),
         supabase.from('why_choose_us').select('*').eq('published', true).order('display_order'),
@@ -213,69 +213,6 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ===== ABOUT SECTION ===== */}
-      <section ref={aboutView.ref} className="section-padding bg-cream-50">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className={`space-y-6 ${aboutView.inView ? 'animate-reveal-up' : 'opacity-0'}`}>
-              <span className="badge-navy">About Us</span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-light font-display tracking-tight leading-[1.15]">
-                Your Trusted Building<br />Services Company
-              </h2>
-              <p className="text-charcoal-500 text-base leading-relaxed font-body">
-                Cambridgeshire Building Services is a professional building company providing high-quality renovation, installation and maintenance services throughout Cambridgeshire. From complete kitchen and bathroom renovations to tiling, flooring, doors, windows, driveways and landscaping, our experienced team delivers exceptional workmanship on every project.
-              </p>
-              <p className="text-charcoal-500 text-base leading-relaxed font-body">
-                We work with residential and commercial clients, combining traditional craftsmanship with modern techniques to transform properties across the region. No job is too big or too small — we bring the same care and attention to every project.
-              </p>
-              <div className="flex flex-col sm:flex-row items-start gap-4 pt-4">
-                <Link to="/about" className="btn-outline inline-flex items-center gap-2 font-body">Learn More About Us <ArrowRight size={14} /></Link>
-                <Link to="/contact" className="text-navy-800 font-medium text-sm font-body hover:text-navy-900 transition-colors inline-flex items-center gap-1.5">Get Free Quote <ArrowRight size={14} /></Link>
-              </div>
-            </div>
-
-            <div className={`grid grid-cols-2 gap-4 ${aboutView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
-              <div className="space-y-4">
-                <div className="overflow-hidden h-64">
-                  <img src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Kitchen renovation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-                </div>
-                <div className="overflow-hidden h-40">
-                  <img src="https://images.pexels.com/photos/279607/pexels-photo-279607.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Floor tiling" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-                </div>
-              </div>
-              <div className="space-y-4 pt-12">
-                <div className="overflow-hidden h-40">
-                  <img src="https://images.pexels.com/photos/6585757/pexels-photo-6585757.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Bathroom renovation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-                </div>
-                <div className="overflow-hidden h-64">
-                  <img src="https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Patio installation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== STATS BAR ===== */}
-      <section className="bg-white border-y border-charcoal-200/50">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="grid grid-cols-3 divide-x divide-charcoal-200/50">
-            <div ref={s1.ref} className="text-center py-10 md:py-14">
-              <div className="text-3xl md:text-5xl font-light font-display text-charcoal-900 tracking-tight">{s1.count}+</div>
-              <p className="text-charcoal-400 font-body text-[11px] tracking-widest uppercase mt-2">Years Experience</p>
-            </div>
-            <div ref={s2.ref} className="text-center py-10 md:py-14">
-              <div className="text-3xl md:text-5xl font-light font-display text-charcoal-900 tracking-tight">{s2.count}+</div>
-              <p className="text-charcoal-400 font-body text-[11px] tracking-widest uppercase mt-2">Projects Completed</p>
-            </div>
-            <div ref={s3.ref} className="text-center py-10 md:py-14">
-              <div className="text-3xl md:text-5xl font-light font-display text-charcoal-900 tracking-tight">{s3.count}%</div>
-              <p className="text-charcoal-400 font-body text-[11px] tracking-widest uppercase mt-2">Client Satisfaction</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ===== SERVICES ===== */}
       <section ref={servicesView.ref} className="section-padding bg-cream-50">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -375,6 +312,69 @@ export function HomePage() {
             )) : (
               <p className="text-charcoal-400 font-body text-sm col-span-2 text-center py-12">Projects coming soon. Check back shortly.</p>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== STATS BAR ===== */}
+      <section className="bg-white border-y border-charcoal-200/50">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="grid grid-cols-3 divide-x divide-charcoal-200/50">
+            <div ref={s1.ref} className="text-center py-10 md:py-14">
+              <div className="text-3xl md:text-5xl font-light font-display text-charcoal-900 tracking-tight">{s1.count}+</div>
+              <p className="text-charcoal-400 font-body text-[11px] tracking-widest uppercase mt-2">Years Experience</p>
+            </div>
+            <div ref={s2.ref} className="text-center py-10 md:py-14">
+              <div className="text-3xl md:text-5xl font-light font-display text-charcoal-900 tracking-tight">{s2.count}+</div>
+              <p className="text-charcoal-400 font-body text-[11px] tracking-widest uppercase mt-2">Projects Completed</p>
+            </div>
+            <div ref={s3.ref} className="text-center py-10 md:py-14">
+              <div className="text-3xl md:text-5xl font-light font-display text-charcoal-900 tracking-tight">{s3.count}%</div>
+              <p className="text-charcoal-400 font-body text-[11px] tracking-widest uppercase mt-2">Client Satisfaction</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== ABOUT SECTION ===== */}
+      <section ref={aboutView.ref} className="section-padding bg-cream-50">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className={`space-y-6 ${aboutView.inView ? 'animate-reveal-up' : 'opacity-0'}`}>
+              <span className="badge-navy">About Us</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-light font-display tracking-tight leading-[1.15]">
+                Your Trusted Building<br />Services Company
+              </h2>
+              <p className="text-charcoal-500 text-base leading-relaxed font-body">
+                Cambridgeshire Building Services is a professional building company providing high-quality renovation, installation and maintenance services throughout Cambridgeshire. From complete kitchen and bathroom renovations to tiling, flooring, doors, windows, driveways and landscaping, our experienced team delivers exceptional workmanship on every project.
+              </p>
+              <p className="text-charcoal-500 text-base leading-relaxed font-body">
+                We work with residential and commercial clients, combining traditional craftsmanship with modern techniques to transform properties across the region. No job is too big or too small — we bring the same care and attention to every project.
+              </p>
+              <div className="flex flex-col sm:flex-row items-start gap-4 pt-4">
+                <Link to="/about" className="btn-outline inline-flex items-center gap-2 font-body">Learn More About Us <ArrowRight size={14} /></Link>
+                <Link to="/contact" className="text-navy-800 font-medium text-sm font-body hover:text-navy-900 transition-colors inline-flex items-center gap-1.5">Get Free Quote <ArrowRight size={14} /></Link>
+              </div>
+            </div>
+
+            <div className={`grid grid-cols-2 gap-4 ${aboutView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
+              <div className="space-y-4">
+                <div className="overflow-hidden h-64">
+                  <img src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Kitchen renovation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div className="overflow-hidden h-40">
+                  <img src="https://images.pexels.com/photos/279607/pexels-photo-279607.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Floor tiling" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                </div>
+              </div>
+              <div className="space-y-4 pt-12">
+                <div className="overflow-hidden h-40">
+                  <img src="https://images.pexels.com/photos/6585757/pexels-photo-6585757.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Bathroom renovation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div className="overflow-hidden h-64">
+                  <img src="https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Patio installation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

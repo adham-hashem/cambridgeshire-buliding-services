@@ -403,22 +403,7 @@ export function ContactPage() {
                 </div>
               </div>
 
-              {/* Map */}
-              <div className="bg-white rounded-2xl border border-charcoal-100 overflow-hidden">
-                <div className="h-64">
-                  <iframe
-                    src="https://www.openstreetmap.org/export/embed.html?bbox=0.08%2C52.18%2C0.25%2C52.24&layer=mapnik&marker=52.21%2C0.12"
-                    className="w-full h-full border-0"
-                    title="Cambridgeshire map"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-4 border-t border-charcoal-100">
-                  <a href="https://www.google.com/maps/search/?api=1&query=Cambridge%2C+Cambridgeshire%2C+UK" target="_blank" rel="noopener noreferrer" className="text-navy-800 text-sm font-medium font-body hover:underline inline-flex items-center gap-1">
-                    View on Google Maps <ChevronRight size={14} />
-                  </a>
-                </div>
-              </div>
+              {/* Map removed by user request */}
             </div>
           </div>
         </div>

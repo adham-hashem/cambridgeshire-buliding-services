@@ -30,10 +30,7 @@ export function DashboardLayout() {
     { icon: Home, label: 'Homepage', path: '/dashboard/homepage' },
     { icon: BookOpen, label: 'Journal', path: '/dashboard/journal' },
     { icon: Star, label: 'Testimonials', path: '/dashboard/testimonials' },
-    { icon: MessageSquare, label: 'Contact Messages', path: '/dashboard/consultations' },
-    { icon: Mail, label: 'Subscribers', path: '/dashboard/subscribers' },
     { icon: Users, label: 'Profile', path: '/dashboard/profile' },
-    { icon: Settings, label: 'Settings', path: '/dashboard/media' },
   ];
 
   const isCurrentPath = (path: string) => location.pathname === path;
@@ -55,7 +52,7 @@ export function DashboardLayout() {
         <div className="px-6 py-5 border-b border-charcoal-200">
           <div className="animate-fade-in">
             <img
-              src="/logo.webp"
+              src="/logo-transparent.png"
               alt="Cambridgeshire Building Services"
               className="h-10 w-auto"
             />

@@ -8,6 +8,7 @@ interface Project {
   id: string;
   title: string;
   description: string;
+  short_description: string | null;
   category: string;
   location: string | null;
   completion_date: string | null;
@@ -134,6 +135,7 @@ export function PortfolioPage() {
                   <h3 className="text-lg font-light font-display tracking-tight group-hover:text-navy-900 transition-colors duration-300">{p.title}</h3>
                   {p.location && <p className="text-charcoal-400 text-xs mt-1 font-body flex items-center gap-1"><MapPin size={10} /> {p.location}</p>}
                   {p.completion_date && <p className="text-charcoal-400 text-xs mt-1 font-body flex items-center gap-1"><Calendar size={10} /> {new Date(p.completion_date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</p>}
+                  <p className="text-charcoal-500 text-sm mt-3 line-clamp-2 font-body">{p.short_description || p.description}</p>
                 </div>
               ))}
             </div>
@@ -183,6 +185,7 @@ export function PortfolioPage() {
                 {selected.completion_date && <span className="flex items-center gap-1.5"><Calendar size={13} /> {new Date(selected.completion_date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</span>}
                 {selected.service_type && <span className="text-navy-800">{selected.service_type}</span>}
               </div>
+              {selected.short_description && <p className="text-[#1f2937] font-medium">{selected.short_description}</p>}
               <p className="text-charcoal-600 font-body leading-relaxed">{selected.description}</p>
 
               {/* Before / After */}

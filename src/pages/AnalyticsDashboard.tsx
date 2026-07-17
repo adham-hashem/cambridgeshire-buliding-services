@@ -47,13 +47,6 @@ export function AnalyticsDashboard() {
 
       setStats([
         {
-          label: 'Total Visitors',
-          value: visitorCount,
-          icon: <Eye className="w-6 h-6" />,
-          trend: 12,
-          color: 'from-blue-500/20 to-blue-600/20',
-        },
-        {
           label: 'Consultation Requests',
           value: consultationsRes.count || 0,
           icon: <MessageSquare className="w-6 h-6" />,

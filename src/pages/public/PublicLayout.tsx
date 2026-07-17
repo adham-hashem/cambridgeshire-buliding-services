@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Mail as MailIcon, MapPin, Instagram, Facebook, Youtube, Clock } from 'lucide-react';
+import { Menu, X, Phone, Mail as MailIcon, MapPin, Instagram, Facebook, Clock } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
 interface SiteSettings {
@@ -60,44 +60,23 @@ const phone = settings?.phone || '07814 584 119';
 
   return (
     <div className="bg-cream-50 min-h-screen flex flex-col">
-      {/* Top Bar */}
-      <div className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'opacity-0 pointer-events-none -translate-y-full' : 'opacity-100 translate-y-0'}`}>
-        <div className="bg-charcoal-900 text-charcoal-300">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-9">
-            <div className="flex items-center gap-6 text-[11px] tracking-wider uppercase font-body">
-              <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-1.5 hover:text-white transition-colors">
-                <Phone size={10} /> {phone}
-              </a>
-              <a href={`mailto:${email}`} className="hidden sm:flex items-center gap-1.5 hover:text-white transition-colors">
-                <MailIcon size={10} /> {email}
-              </a>
-            </div>
-            <div className="flex items-center gap-3">
-              {[Instagram, Facebook, Youtube].map((Icon, i) => (
-                <a key={i} href="#" className="p-1 hover:text-white transition-colors">
-                  <Icon size={12} />
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Top Bar removed by user request */}
 
       {/* Main Navigation */}
       <nav
-        className={`fixed left-0 right-0 z-40 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
           scrolled
-            ? 'top-0 bg-white/95 backdrop-blur-lg border-b border-charcoal-200/60 shadow-[0_1px_0_0_rgba(0,0,0,0.04)]'
-            : 'top-9 bg-cream-50/80 backdrop-blur-md border-b border-charcoal-200/30'
+            ? 'bg-white/95 backdrop-blur-lg border-b border-charcoal-200/60 shadow-[0_1px_0_0_rgba(0,0,0,0.04)]'
+            : 'bg-cream-50/80 backdrop-blur-md border-b border-charcoal-200/30'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-16 md:h-[72px]">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-20 md:h-[90px]">
           {/* Logo */}
           <Link to="/" className="flex items-center group relative z-10">
             <img
               src="/logo-transparent.png"
               alt={companyName}
-              className="h-12 md:h-16 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              className="h-16 md:h-20 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </Link>
 
@@ -185,13 +164,13 @@ const phone = settings?.phone || '07814 584 119';
             {/* Brand */}
             <div className="lg:col-span-4 space-y-6">
               <Link to="/" className="inline-block">
-                <img src="/logo.webp" alt={companyName} className="h-12 w-auto brightness-0 invert opacity-80" />
+                <img src="/logo-transparent.png" alt={companyName} className="h-12 w-auto brightness-0 invert opacity-80" />
               </Link>
               <p className="text-charcoal-400 text-sm leading-relaxed font-body max-w-xs">
                 Professional building, renovation, and property improvement services. From kitchens and bathrooms to tiling, flooring, driveways and landscaping — we deliver exceptional workmanship across Cambridgeshire.
               </p>
               <div className="flex items-center gap-3 pt-1">
-                {[Instagram, Facebook, Youtube].map((Icon, i) => (
+                {[Instagram, Facebook].map((Icon, i) => (
                   <a key={i} href="#" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300">
                     <Icon size={14} />
                   </a>

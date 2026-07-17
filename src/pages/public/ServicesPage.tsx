@@ -154,7 +154,7 @@ export function ServicesPage() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                       {grouped[cat].map((service, i) => (
-                        <ServiceCard key={service.id} service={service} index={i} inView={grid.inView} />
+                        <ServiceCard key={service.id} service={service} index={i} inView={true} />
                       ))}
                     </div>
                   </div>
@@ -202,8 +202,8 @@ function ServiceCard({ service, index, inView }: { service: Service; index: numb
       {service.featured && (
         <span className="inline-block px-2 py-0.5 bg-gold-50 text-gold-700 text-[9px] tracking-widest uppercase font-body font-medium mb-3">Featured</span>
       )}
-      <h3 className="text-xl font-medium font-display mb-2 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{service.name}</h3>
-      <p className="text-charcoal-500 text-sm leading-relaxed font-body mb-5">{service.description}</p>
+      <h3 className="text-xl font-medium font-display mb-1 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{service.name}</h3>
+      <p className="text-charcoal-500 text-sm leading-relaxed font-body mb-4">{service.description}</p>
       <Link to="/contact" className="text-navy-800 font-medium text-[11px] tracking-widest uppercase font-body inline-flex items-center gap-1.5 hover:gap-2.5 transition-all duration-300">
         Learn More <ArrowRight size={11} />
       </Link>
