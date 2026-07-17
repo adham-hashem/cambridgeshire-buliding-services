@@ -29,20 +29,17 @@ function useInView(threshold = 0.1) {
 }
 
 const categoryImages: Record<string, string> = {
-  'Outdoor Improvements': '/services images/Patio Installation.webp',
-  'Tiling': '/services images/Tile Installation.webp',
-  'Bathrooms': '/services images/Bathroom Renovations.webp',
-  'Kitchens': '/services images/Kitchen Renovations.webp',
-  'Flooring': '/services images/Vinyl Flooring Installation.webp',
+  'Outdoor & Exterior': '/services images/Patio Installation.webp',
+  'Tiling & Flooring': '/services images/Tile Installation.webp',
+  'Kitchen & Bathroom': '/services images/Bathroom Renovations.webp',
   'Doors & Windows': '/services images/Internal Door Installation.webp',
-  'Home Renovation': '/services images/Garage Conversion.webp',
-  'Plumbing': '/services images/Water Leak Repairs.webp',
-  'Property Maintenance': '/services images/Property Maintenance & Repairs Before Sale or Letting.webp',
+  'General Building': '/services images/Garage Conversion.webp',
+  'Painting & Decorating': '/services images/Interior House Painting.webp',
 };
 
 const categoryOrder = [
-  'Home Renovation', 'Bathrooms', 'Kitchens', 'Flooring',
-  'Tiling', 'Doors & Windows', 'Outdoor Improvements', 'Plumbing', 'Property Maintenance',
+  'General Building', 'Kitchen & Bathroom', 'Tiling & Flooring',
+  'Painting & Decorating', 'Doors & Windows', 'Outdoor & Exterior',
 ];
 
 
