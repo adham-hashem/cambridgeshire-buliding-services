@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, ChevronRight, ChevronDown, Shield, FileText, Award,
@@ -144,6 +145,12 @@ export function HomePage() {
 
   return (
     <div className="bg-cream-50">
+      <Helmet>
+        <title>Cambridgeshire Building Services | Premium Home Renovations</title>
+        <meta name="description" content="Expert building, renovations, kitchen & bathroom installations, and property maintenance across Cambridgeshire. Get a free quote today." />
+        <meta property="og:title" content="Cambridgeshire Building Services | Premium Home Renovations" />
+        <meta property="og:description" content="Expert building, renovations, kitchen & bathroom installations, and property maintenance across Cambridgeshire." />
+      </Helmet>
       {/* ===== HERO ===== */}
       <section className="relative h-screen flex items-end overflow-hidden">
         <div className="absolute inset-0">
@@ -288,11 +295,14 @@ export function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-charcoal-200/50">
             {services.map((service, i) => {
-              const Icon = serviceIconMap[service.category] || Hammer;
               return (
                 <div key={service.id} className={`group bg-cream-50 p-8 md:p-10 hover:bg-white transition-all duration-500 ${servicesView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 80}ms` }}>
-                  <Icon className="w-5 h-5 text-navy-800 mb-6" />
-                  <h3 className="text-base font-medium font-display mb-3 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{service.name}</h3>
+                  <div className="w-14 h-14 rounded-full overflow-hidden mb-6 border-2 border-charcoal-200 group-hover:border-navy-800 transition-colors duration-300">
+                    <img src={`/services images/${service.name}.webp`} alt={service.name} className="w-full h-full object-cover" />
+                  </div>
+                  <h3 className="text-xl font-medium font-display mb-3 tracking-tight group-hover:text-navy-900 transition-colors duration-300">
+                    <Link to="/services" className="hover:underline">{service.name}</Link>
+                  </h3>
                   <p className="text-charcoal-400 text-sm leading-relaxed font-body">{service.description}</p>
                   <Link to="/services" className="inline-flex items-center gap-1.5 text-charcoal-900 text-[11px] tracking-widest uppercase font-medium mt-6 font-body hover:gap-2.5 transition-all duration-300">
                     Learn More <ArrowRight size={12} />

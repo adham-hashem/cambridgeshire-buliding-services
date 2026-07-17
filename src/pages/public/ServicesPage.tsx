@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import {
@@ -27,16 +28,16 @@ function useInView(threshold = 0.1) {
   return { ref, inView };
 }
 
-const categoryIcons: Record<string, React.ElementType> = {
-  'Outdoor Improvements': TreePine,
-  'Tiling': Layers,
-  'Bathrooms': Bath,
-  'Kitchens': Home,
-  'Flooring': Layers,
-  'Doors & Windows': DoorOpen,
-  'Home Renovation': Hammer,
-  'Plumbing': Droplets,
-  'Property Maintenance': Wrench,
+const categoryImages: Record<string, string> = {
+  'Outdoor Improvements': '/services images/Patio Installation.webp',
+  'Tiling': '/services images/Tile Installation.webp',
+  'Bathrooms': '/services images/Bathroom Renovations.webp',
+  'Kitchens': '/services images/Kitchen Renovations.webp',
+  'Flooring': '/services images/Vinyl Flooring Installation.webp',
+  'Doors & Windows': '/services images/Internal Door Installation.webp',
+  'Home Renovation': '/services images/Garage Conversion.webp',
+  'Plumbing': '/services images/Water Leak Repairs.webp',
+  'Property Maintenance': '/services images/Property Maintenance & Repairs Before Sale or Letting.webp',
 };
 
 const categoryOrder = [
@@ -44,40 +45,7 @@ const categoryOrder = [
   'Tiling', 'Doors & Windows', 'Outdoor Improvements', 'Plumbing', 'Property Maintenance',
 ];
 
-function getServiceImage(service: Service): string {
-  if (service.image_path) return supabase.storage.from('media').getPublicUrl(service.image_path).data.publicUrl;
-  const images: Record<string, string> = {
-    'Natural Turf Installation': 'https://images.pexels.com/photos/2539160/pexels-photo-2539160.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Artificial Grass Installation': 'https://images.pexels.com/photos/2539160/pexels-photo-2539160.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Patio Installation': 'https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Tile Installation': 'https://images.pexels.com/photos/279607/pexels-photo-279607.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Floor Tiling': 'https://images.pexels.com/photos/279607/pexels-photo-279607.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Wall Tiling': 'https://images.pexels.com/photos/279607/pexels-photo-279607.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Bathroom Renovations': 'https://images.pexels.com/photos/6585757/pexels-photo-6585757.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Kitchen Renovations': 'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Kitchen Design & Installation': 'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Interior House Painting': 'https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Wallpaper Installation': 'https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Internal Door Installation': 'https://images.pexels.com/photos/139312/pexels-photo-139312.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'External Door Installation': 'https://images.pexels.com/photos/139312/pexels-photo-139312.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Door Frame Installation': 'https://images.pexels.com/photos/139312/pexels-photo-139312.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Vinyl Flooring Installation': 'https://images.pexels.com/photos/279607/pexels-photo-279607.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Parquet Flooring Installation': 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Carpet Installation': 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Skirting Board Installation': 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'uPVC Window Installation': 'https://images.pexels.com/photos/139312/pexels-photo-139312.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Wooden Fence Installation': 'https://images.pexels.com/photos/1084540/pexels-photo-1084540.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Block Paving Installation': 'https://images.pexels.com/photos/2539160/pexels-photo-2539160.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Driveway Installation': 'https://images.pexels.com/photos/2539160/pexels-photo-2539160.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Water Leak Repairs': 'https://images.pexels.com/photos/6585757/pexels-photo-6585757.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Toilet Installation': 'https://images.pexels.com/photos/6585757/pexels-photo-6585757.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Wash Basin Installation': 'https://images.pexels.com/photos/6585757/pexels-photo-6585757.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Bathtub Installation': 'https://images.pexels.com/photos/266044/pexels-photo-266044.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Garage Conversion': 'https://images.pexels.com/photos/323552/pexels-photo-323552.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'Property Maintenance & Repairs Before Sale or Letting': 'https://images.pexels.com/photos/323552/pexels-photo-323552.jpeg?auto=compress&cs=tinysrgb&w=600',
-  };
-  return images[service.name] || 'https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=600';
-}
+
 
 export function ServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
@@ -114,6 +82,10 @@ export function ServicesPage() {
 
   return (
     <div className="bg-cream-50">
+      <Helmet>
+        <title>Building Services | Cambridgeshire Home Renovations</title>
+        <meta name="description" content="Explore our wide range of building services including home renovations, kitchens, bathrooms, flooring, tiling, and outdoor improvements across Cambridgeshire." />
+      </Helmet>
       {/* Hero */}
       <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
@@ -140,17 +112,20 @@ export function ServicesPage() {
               All Services
             </button>
             {categories.map((cat) => {
-              const Icon = categoryIcons[cat] || Hammer;
+              const imgSrc = categoryImages[cat] || '/services images/Garage Conversion.webp';
               const active = activeCategory === cat;
               return (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 text-[11px] tracking-widest uppercase font-body font-medium whitespace-nowrap transition-all duration-300 flex items-center gap-1.5 ${
+                  className={`px-4 py-2 text-[11px] tracking-widest uppercase font-body font-medium whitespace-nowrap transition-all duration-300 flex items-center gap-2 ${
                     active ? 'bg-navy-800 text-white' : 'text-charcoal-500 hover:text-charcoal-900 bg-cream-100'
                   }`}
                 >
-                  <Icon size={12} /> {cat}
+                  <div className="w-4 h-4 rounded-full overflow-hidden shrink-0">
+                    <img src={imgSrc} alt={cat} className="w-full h-full object-cover" />
+                  </div>
+                  {cat}
                 </button>
               );
             })}
@@ -169,12 +144,12 @@ export function ServicesPage() {
           ) : activeCategory === 'all' ? (
             <div className="space-y-16 md:space-y-24">
               {categories.map((cat) => {
-                const Icon = categoryIcons[cat] || Hammer;
+                const imgSrc = categoryImages[cat] || '/services images/Garage Conversion.webp';
                 return (
                   <div key={cat}>
                     <div className="flex items-center gap-4 mb-10 md:mb-12">
-                      <div className="w-10 h-10 rounded-full bg-navy-50 flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-navy-800" />
+                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-charcoal-200">
+                        <img src={imgSrc} alt={cat} className="w-full h-full object-cover" />
                       </div>
                       <h2 className="text-2xl md:text-3xl font-light font-display tracking-tight">{cat}</h2>
                       <div className="flex-1 h-px bg-charcoal-200/50" />
@@ -223,20 +198,18 @@ export function ServicesPage() {
 
 function ServiceCard({ service, index, inView }: { service: Service; index: number; inView: boolean }) {
   return (
-    <div className={`group bg-white rounded-2xl border border-charcoal-100 overflow-hidden hover-lift ${inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${index * 60}ms` }}>
-      <div className="h-48 overflow-hidden">
-        <img src={getServiceImage(service)} alt={service.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+    <div className={`group bg-white rounded-2xl border border-charcoal-100 overflow-hidden hover-lift p-6 md:p-8 ${inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${index * 60}ms` }}>
+      <div className="w-14 h-14 rounded-full overflow-hidden mb-5 border-2 border-charcoal-200 group-hover:border-navy-800 transition-colors duration-300">
+        <img src={`/services images/${service.name}.webp`} alt={service.name} className="w-full h-full object-cover" />
       </div>
-      <div className="p-6">
-        {service.featured && (
-          <span className="inline-block px-2 py-0.5 bg-gold-50 text-gold-700 text-[9px] tracking-widest uppercase font-body font-medium mb-2">Featured</span>
-        )}
-        <h3 className="text-lg font-medium font-display mb-2 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{service.name}</h3>
-        <p className="text-charcoal-500 text-sm leading-relaxed font-body mb-4">{service.description}</p>
-        <Link to="/contact" className="text-navy-800 font-medium text-[11px] tracking-widest uppercase font-body inline-flex items-center gap-1.5 hover:gap-2.5 transition-all duration-300">
-          Learn More <ArrowRight size={11} />
-        </Link>
-      </div>
+      {service.featured && (
+        <span className="inline-block px-2 py-0.5 bg-gold-50 text-gold-700 text-[9px] tracking-widest uppercase font-body font-medium mb-3">Featured</span>
+      )}
+      <h3 className="text-xl font-medium font-display mb-2 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{service.name}</h3>
+      <p className="text-charcoal-500 text-sm leading-relaxed font-body mb-5">{service.description}</p>
+      <Link to="/contact" className="text-navy-800 font-medium text-[11px] tracking-widest uppercase font-body inline-flex items-center gap-1.5 hover:gap-2.5 transition-all duration-300">
+        Learn More <ArrowRight size={11} />
+      </Link>
     </div>
   );
 }

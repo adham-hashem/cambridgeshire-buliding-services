@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { ArrowRight, MapPin, Calendar, ArrowLeft } from 'lucide-react';
@@ -80,6 +81,10 @@ export function PortfolioPage() {
 
   return (
     <div className="bg-cream-50">
+      <Helmet>
+        <title>Project Portfolio | Cambridgeshire Building Services</title>
+        <meta name="description" content="View our recent building and renovation projects in Cambridgeshire. See our high-quality workmanship in kitchens, bathrooms, patios, and more." />
+      </Helmet>
       {/* Hero */}
       <section className="relative min-h-[45vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">

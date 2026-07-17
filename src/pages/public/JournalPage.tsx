@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { supabase } from '../../lib/supabase';
 import { ArrowRight, Clock, BookOpen } from 'lucide-react';
 
@@ -64,6 +65,10 @@ export function JournalPage() {
 
   return (
     <div className="bg-cream-50">
+      <Helmet>
+        <title>Journal & Inspiration | Cambridgeshire Building Services</title>
+        <meta name="description" content="Read our latest insights, tips, and trends on home renovations, building projects, and interior improvements in Cambridgeshire." />
+      </Helmet>
       {/* Hero */}
       <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">

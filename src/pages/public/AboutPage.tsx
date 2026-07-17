@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Users, Package, Eye, Clock, Receipt, Smile,
@@ -40,6 +41,10 @@ export function AboutPage() {
 
   return (
     <div className="bg-cream-50">
+      <Helmet>
+        <title>About Us | Cambridgeshire Building Services</title>
+        <meta name="description" content="Learn more about our experienced team of builders, our core values, and why we are Cambridgeshire's premier choice for home improvements." />
+      </Helmet>
       {/* Hero */}
       <section className="relative min-h-[45vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">

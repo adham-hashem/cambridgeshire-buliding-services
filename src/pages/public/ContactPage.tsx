@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import {
@@ -202,6 +203,10 @@ export function ContactPage() {
 
   return (
     <div className="bg-cream-50 min-h-screen">
+      <Helmet>
+        <title>Contact Us & Get a Quote | Cambridgeshire Building Services</title>
+        <meta name="description" content="Get in touch with Cambridgeshire Building Services for a free, no-obligation quote on your next home improvement, renovation, or building project." />
+      </Helmet>
       {/* Hero */}
       <section className="relative min-h-[40vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">

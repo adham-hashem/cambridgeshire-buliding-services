@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { BarChart3, Eye, MessageSquare, TrendingUp, ArrowUpRight, Calendar } from 'lucide-react';
 
+
 interface Stat {
   label: string;
   value: number;
