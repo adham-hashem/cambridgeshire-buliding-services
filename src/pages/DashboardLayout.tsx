@@ -27,7 +27,6 @@ export function DashboardLayout() {
     { icon: FileText, label: 'Quote Requests', path: '/dashboard/quotes' },
     { icon: Home, label: 'Projects', path: '/dashboard/projects' },
     { icon: Settings, label: 'Services', path: '/dashboard/services' },
-    { icon: Home, label: 'Homepage', path: '/dashboard/homepage' },
     { icon: BookOpen, label: 'Journal', path: '/dashboard/journal' },
     { icon: Star, label: 'Testimonials', path: '/dashboard/testimonials' },
     { icon: Users, label: 'Profile', path: '/dashboard/profile' },

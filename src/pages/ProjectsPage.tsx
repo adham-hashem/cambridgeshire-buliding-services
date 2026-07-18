@@ -169,7 +169,6 @@ export function ProjectsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data: user } = await supabase.auth.getUser();
     const payload = {
       title: formData.title,
       description: formData.description,
@@ -190,24 +189,31 @@ export function ProjectsPage() {
 
     try {
       if (editingId) {
-        await supabase.from('projects').update(payload).eq('id', editingId);
+        const { error } = await supabase.from('projects').update(payload).eq('id', editingId);
+        if (error) throw error;
       } else {
-        await supabase.from('projects').insert({ ...payload, created_by: user.user?.id });
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError) throw authError;
+        const { error } = await supabase.from('projects').insert({ ...payload, created_by: user?.id });
+        if (error) throw error;
       }
       loadProjects();
       resetForm();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save project:', error);
+      alert('Failed to save project: ' + (error.message || JSON.stringify(error)));
     }
   };
 
   const handleDelete = async (id: string) => {
     if (confirm('Delete this project?')) {
       try {
-        await supabase.from('projects').delete().eq('id', id);
+        const { error } = await supabase.from('projects').delete().eq('id', id);
+        if (error) throw error;
         loadProjects();
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to delete project:', error);
+        alert('Failed to delete project: ' + (error.message || JSON.stringify(error)));
       }
     }
   };
@@ -215,19 +221,23 @@ export function ProjectsPage() {
   const togglePublish = async (project: Project) => {
     const newStatus = project.status === 'published' ? 'draft' : 'published';
     try {
-      await supabase.from('projects').update({ status: newStatus }).eq('id', project.id);
+      const { error } = await supabase.from('projects').update({ status: newStatus }).eq('id', project.id);
+      if (error) throw error;
       loadProjects();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to toggle publish:', error);
+      alert('Failed to toggle publish: ' + (error.message || JSON.stringify(error)));
     }
   };
 
   const toggleFeatured = async (project: Project) => {
     try {
-      await supabase.from('projects').update({ featured: !project.featured }).eq('id', project.id);
+      const { error } = await supabase.from('projects').update({ featured: !project.featured }).eq('id', project.id);
+      if (error) throw error;
       loadProjects();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to toggle featured:', error);
+      alert('Failed to toggle featured: ' + (error.message || JSON.stringify(error)));
     }
   };
 
