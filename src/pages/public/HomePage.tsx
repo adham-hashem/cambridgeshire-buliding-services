@@ -80,7 +80,6 @@ const fallbackProjectImages = [
 export function HomePage() {
   const [services, setServices] = useState<Service[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
   const [trustItems, setTrustItems] = useState<TrustItem[]>([]);
   const [whyChooseItems, setWhyChooseItems] = useState<WhyChooseItem[]>([]);
@@ -93,22 +92,19 @@ export function HomePage() {
   const servicesView = useInView();
   const whyView = useInView();
   const portfolioView = useInView();
-  const testimonialsView = useInView();
   const journalView = useInView();
 
   useEffect(() => {
     const load = async () => {
-      const [sr, pr, tr, jr, tt, wc] = await Promise.all([
+      const [sr, pr, jr, tt, wc] = await Promise.all([
         supabase.from('services').select('*').eq('published', true).order('display_order').limit(8),
         supabase.from('projects').select('*').eq('status', 'published').order('created_at', { ascending: false }).limit(4),
-        supabase.from('testimonials').select('*').order('created_at', { ascending: false }).limit(3),
         supabase.from('garden_journal').select('*').eq('published', true).order('published_at', { ascending: false }).limit(3),
         supabase.from('trust_items').select('*').eq('published', true).order('display_order'),
         supabase.from('why_choose_us').select('*').eq('published', true).order('display_order'),
       ]);
       setServices(sr.data as Service[] || []);
       setProjects(pr.data as Project[] || []);
-      setTestimonials(tr.data as Testimonial[] || []);
       setJournalEntries(jr.data as JournalEntry[] || []);
       setTrustItems(tt.data as TrustItem[] || []);
       setWhyChooseItems(wc.data as WhyChooseItem[] || []);
@@ -255,6 +251,37 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* ===== PORTFOLIO ===== */}
+      <section ref={portfolioView.ref} className="section-padding bg-cream-50">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 md:mb-20">
+            <div className="space-y-4">
+              <span className="badge-navy">Projects</span>
+              <h2 className="text-3xl md:text-4xl font-light font-display tracking-tight">
+                Selected Work
+              </h2>
+            </div>
+            <Link to="/portfolio" className="btn-outline inline-flex items-center gap-2 font-body self-start md:self-auto">View All <ArrowRight size={14} /></Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {projects.length > 0 ? projects.map((p, i) => (
+              <Link to="/portfolio" key={p.id} className={`group block ${portfolioView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 100}ms` }}>
+                <div className="garden-image h-72 md:h-96 mb-5 overflow-hidden">
+                  <img src={p.cover_image_path ? supabase.storage.from('media').getPublicUrl(p.cover_image_path).data.publicUrl : fallbackProjectImages[i % 4]} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <span className="badge-cream text-[10px]">{p.category}</span>
+                <h3 className="text-xl font-light font-display mt-3 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{p.title}</h3>
+                {p.location && <p className="text-charcoal-400 text-xs mt-1 font-body tracking-wider uppercase">{p.location}</p>}
+                <p className="text-charcoal-400 text-sm mt-2 line-clamp-2 font-body leading-relaxed">{p.description}</p>
+              </Link>
+            )) : (
+              <p className="text-charcoal-400 font-body text-sm col-span-2 text-center py-12">Projects coming soon. Check back shortly.</p>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* ===== WHY CHOOSE US ===== */}
       <section ref={whyView.ref} className="section-padding bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -285,36 +312,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ===== PORTFOLIO ===== */}
-      <section ref={portfolioView.ref} className="section-padding bg-cream-50">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 md:mb-20">
-            <div className="space-y-4">
-              <span className="badge-navy">Projects</span>
-              <h2 className="text-3xl md:text-4xl font-light font-display tracking-tight">
-                Selected Work
-              </h2>
-            </div>
-            <Link to="/portfolio" className="btn-outline inline-flex items-center gap-2 font-body self-start md:self-auto">View All <ArrowRight size={14} /></Link>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            {projects.length > 0 ? projects.map((p, i) => (
-              <div key={p.id} className={`group ${portfolioView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 100}ms` }}>
-                <div className="garden-image h-72 md:h-96 mb-5 overflow-hidden">
-                  <img src={p.cover_image_path ? supabase.storage.from('media').getPublicUrl(p.cover_image_path).data.publicUrl : fallbackProjectImages[i % 4]} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                </div>
-                <span className="badge-cream text-[10px]">{p.category}</span>
-                <h3 className="text-xl font-light font-display mt-3 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{p.title}</h3>
-                {p.location && <p className="text-charcoal-400 text-xs mt-1 font-body tracking-wider uppercase">{p.location}</p>}
-                <p className="text-charcoal-400 text-sm mt-2 line-clamp-2 font-body leading-relaxed">{p.description}</p>
-              </div>
-            )) : (
-              <p className="text-charcoal-400 font-body text-sm col-span-2 text-center py-12">Projects coming soon. Check back shortly.</p>
-            )}
-          </div>
-        </div>
-      </section>
 
       {/* ===== STATS BAR ===== */}
       <section className="bg-white border-y border-charcoal-200/50">
@@ -406,46 +404,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ===== TESTIMONIALS ===== */}
-      <section ref={testimonialsView.ref} className="section-padding bg-cream-50">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="text-center mb-16 md:mb-20 space-y-4">
-            <span className="badge-gold">Testimonials</span>
-            <h2 className="text-3xl md:text-4xl font-light font-display tracking-tight">
-              Client Words
-            </h2>
-          </div>
-          {testimonials.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-charcoal-200/40">
-              {testimonials.map((t, i) => (
-                <div key={t.id} className={`bg-cream-50 p-10 md:p-12 ${testimonialsView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 100}ms` }}>
-                  <div className="flex gap-1 mb-6">
-                    {Array.from({ length: t.rating }).map((_, j) => (
-                      <Star key={j} size={12} className="text-cream-600 fill-cream-600" />
-                    ))}
-                  </div>
-                  <p className="text-charcoal-600 leading-relaxed mb-8 font-body text-sm italic">"{t.review_text}"</p>
-                  <div className="border-t border-charcoal-200/50 pt-5 flex items-center gap-4">
-                    {t.customer_photo_path ? (
-                      <img src={supabase.storage.from('media').getPublicUrl(t.customer_photo_path).data.publicUrl} alt={t.client_name} className="w-10 h-10 rounded-full object-cover" />
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-navy-100 flex items-center justify-center text-navy-900 font-display font-medium text-sm">
-                        {t.client_name.charAt(0)}
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-charcoal-900 font-medium font-body text-sm tracking-tight">{t.client_name}</p>
-                      {t.service_used && <p className="text-charcoal-400 text-[11px] tracking-wider uppercase font-body mt-0.5">{t.service_used}</p>}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-charcoal-400 font-body text-sm text-center py-12">Client testimonials coming soon.</p>
-          )}
-        </div>
-      </section>
+
 
       {/* ===== JOURNAL ===== */}
       <section ref={journalView.ref} className="section-padding bg-white">
@@ -499,8 +458,8 @@ export function HomePage() {
             <Link to="/contact" className="px-8 py-3.5 bg-navy-800 hover:bg-navy-900 text-white font-medium text-[11px] tracking-[0.2em] uppercase transition-all duration-300 font-body inline-flex items-center gap-2">
               Get Free Quote <ArrowRight size={14} />
             </Link>
-            <a href="tel:07814584119" className="px-8 py-3.5 bg-transparent text-white/70 font-medium text-[11px] tracking-[0.2em] uppercase border border-white/20 hover:border-white/40 hover:text-white transition-all duration-300 font-body inline-flex items-center gap-2">
-              <Phone size={14} /> 07814 584 119
+            <a href="tel:+447383608438" className="px-8 py-3.5 bg-transparent text-white/70 font-medium text-[11px] tracking-[0.2em] uppercase border border-white/20 hover:border-white/40 hover:text-white transition-all duration-300 font-body inline-flex items-center gap-2">
+              <Phone size={14} /> +44 7383 608438
             </a>
           </div>
         </div>

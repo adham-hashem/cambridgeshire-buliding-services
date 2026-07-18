@@ -182,8 +182,8 @@ export function ContactPage() {
               <h2 className="text-2xl md:text-3xl font-bold font-display">Thank You for Your Quote Request</h2>
               <p className="text-charcoal-500 font-body leading-relaxed">We have received your request and will contact you within 24 hours to discuss your project and arrange a site visit if needed.</p>
               <div className="pt-2 space-y-3">
-                <a href="tel:07814584119" className="btn-primary inline-flex items-center gap-2 font-body text-sm px-6 py-3.5">
-                  <Phone size={18} /> 07814 584 119
+                <a href="tel:+447383608438" className="btn-primary inline-flex items-center gap-2 font-body text-sm px-6 py-3.5">
+                  <Phone size={18} /> +44 7383 608438
                 </a>
                 <p className="text-charcoal-400 text-xs font-body">Call us directly if you need an immediate response</p>
               </div>
@@ -210,7 +210,7 @@ export function ContactPage() {
       {/* Hero */}
       <section className="relative min-h-[40vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Get a quote" className="w-full h-full object-cover" />
+          <img src="/two images/pro.webp" alt="Get a quote" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal-900/50 via-charcoal-900/40 to-cream-50" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-5 md:px-8 text-center space-y-4 pt-20 pb-8">
@@ -363,31 +363,23 @@ export function ContactPage() {
               <div className="bg-white rounded-2xl border border-charcoal-100 p-6 space-y-5">
                 <h3 className="text-lg font-bold font-display">Contact Information</h3>
                 <div className="space-y-4">
-                  <a href="tel:07814584119" className="flex items-center gap-3 group">
+                  <a href="tel:+447383608438" className="flex items-center gap-3 group">
                     <div className="w-10 h-10 rounded-lg bg-navy-50 flex items-center justify-center flex-shrink-0">
                       <Phone size={16} className="text-navy-800" />
                     </div>
                     <div>
                       <p className="text-charcoal-400 text-xs font-body">Phone</p>
-                      <p className="text-charcoal-800 font-medium text-sm font-body group-hover:text-navy-800 transition-colors">07814 584 119</p>
+                      <p className="text-charcoal-800 font-medium text-sm font-body group-hover:text-navy-800 transition-colors">+44 7383 608438</p>
                     </div>
                   </a>
-                  <a href="mailto:info@cambridgeshirebuilding.co.uk" className="flex items-center gap-3 group">
-                    <div className="w-10 h-10 rounded-lg bg-navy-50 flex items-center justify-center flex-shrink-0">
-                      <MailIcon size={16} className="text-navy-800" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-charcoal-400 text-xs font-body">Email</p>
-                      <p className="text-charcoal-800 font-medium text-sm font-body group-hover:text-navy-800 transition-colors truncate">info@cambridgeshirebuilding.co.uk</p>
-                    </div>
-                  </a>
+
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-navy-50 flex items-center justify-center flex-shrink-0">
                       <MapPin size={16} className="text-navy-800" />
                     </div>
                     <div>
                       <p className="text-charcoal-400 text-xs font-body">Address</p>
-                      <p className="text-charcoal-800 font-medium text-sm font-body">Cambridge, Cambridgeshire, UK</p>
+                      <p className="text-charcoal-800 font-medium text-sm font-body">Cambridge, UK</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">

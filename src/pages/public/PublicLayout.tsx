@@ -52,9 +52,9 @@ export function PublicLayout() {
   'Free quotations with no obligation.',
 ];
 
-const phone = settings?.phone || '07814 584 119';
-  const email = settings?.email || 'info@cambridgeshirebuilding.co.uk';
-  const address = settings?.address || 'Cambridge, Cambridgeshire, UK';
+const phone = settings?.phone || '+44 7383 608438';
+  const email = settings?.email || '';
+  const address = settings?.address || 'Cambridge, UK';
   const companyName = settings?.company_name || 'Cambridgeshire Building Services';
   const hours = settings?.business_hours || 'Mon–Fri: 7:30am – 6:00pm, Sat: 8:00am – 2:00pm';
 
@@ -170,11 +170,12 @@ const phone = settings?.phone || '07814 584 119';
                 Professional building, renovation, and property improvement services. From kitchens and bathrooms to tiling, flooring, driveways and landscaping — we deliver exceptional workmanship across Cambridgeshire.
               </p>
               <div className="flex items-center gap-3 pt-1">
-                {[Instagram, Facebook].map((Icon, i) => (
-                  <a key={i} href="#" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300">
-                    <Icon size={14} />
-                  </a>
-                ))}
+                <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300">
+                  <Instagram size={14} />
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61591701435394" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300">
+                  <Facebook size={14} />
+                </a>
               </div>
             </div>
 
@@ -207,9 +208,11 @@ const phone = settings?.phone || '07814 584 119';
                 <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-2.5 text-charcoal-400 hover:text-white text-sm font-body transition-colors duration-300">
                   <Phone size={13} className="flex-shrink-0" /> {phone}
                 </a>
-                <a href={`mailto:${email}`} className="flex items-center gap-2.5 text-charcoal-400 hover:text-white text-sm font-body transition-colors duration-300">
-                  <MailIcon size={13} className="flex-shrink-0" /> {email}
-                </a>
+                {email && (
+                  <a href={`mailto:${email}`} className="flex items-center gap-2.5 text-charcoal-400 hover:text-white text-sm font-body transition-colors duration-300">
+                    <MailIcon size={13} className="flex-shrink-0" /> {email}
+                  </a>
+                )}
                 <div className="flex items-start gap-2.5 text-charcoal-400 text-sm font-body">
                   <MapPin size={13} className="flex-shrink-0 mt-0.5" /> {address}
                 </div>

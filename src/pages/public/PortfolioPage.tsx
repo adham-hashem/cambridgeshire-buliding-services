@@ -89,7 +89,7 @@ export function PortfolioPage() {
       {/* Hero */}
       <section className="relative min-h-[45vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Portfolio" className="w-full h-full object-cover" />
+          <img src="/two images/pro.webp" alt="Portfolio" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-charcoal-900/45" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 text-center space-y-5 pt-20">
@@ -124,7 +124,7 @@ export function PortfolioPage() {
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {filtered.map((p, i) => (
-                <div key={p.id} className={`group cursor-pointer ${grid.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 80}ms` }} onClick={() => openProject(p)}>
+                <div key={p.id} className={`group cursor-pointer ${grid.inView ? 'animate-reveal-up' : 'opacity-100'}`} style={{ animationDelay: `${i * 80}ms` }} onClick={() => openProject(p)}>
                   <div className="garden-image h-72 overflow-hidden mb-4">
                     <img src={p.cover_image_path ? supabase.storage.from('media').getPublicUrl(p.cover_image_path).data.publicUrl : fallbackImages[i % 6]} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   </div>

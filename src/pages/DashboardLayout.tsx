@@ -28,7 +28,7 @@ export function DashboardLayout() {
     { icon: Home, label: 'Projects', path: '/dashboard/projects' },
     { icon: Settings, label: 'Services', path: '/dashboard/services' },
     { icon: BookOpen, label: 'Journal', path: '/dashboard/journal' },
-    { icon: Star, label: 'Testimonials', path: '/dashboard/testimonials' },
+
     { icon: Users, label: 'Profile', path: '/dashboard/profile' },
   ];
 

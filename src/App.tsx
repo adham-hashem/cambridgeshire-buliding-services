@@ -18,7 +18,7 @@ import { AnalyticsDashboard } from './pages/admin/AnalyticsDashboard';
 import { ProjectsPage as AdminProjectsPage } from './pages/admin/ProjectsPage';
 import { TransformationsPage } from './pages/admin/TransformationsPage';
 import { ConsultationsPage } from './pages/admin/ConsultationsPage';
-import { TestimonialsPage as AdminTestimonialsPage } from './pages/admin/TestimonialsPage';
+
 import { JournalPage as AdminJournalPage } from './pages/admin/JournalPage';
 import { ServicesPage as AdminServicesPage } from './pages/admin/ServicesPage';
 import { HomepagePage } from './pages/admin/HomepagePage';
@@ -96,7 +96,7 @@ function AppRoutes() {
         <Route path="transformations" element={<TransformationsPage />} />
         <Route path="consultations" element={<ConsultationsPage />} />
         <Route path="quotes" element={<QuoteRequestsPage />} />
-        <Route path="testimonials" element={<AdminTestimonialsPage />} />
+
         <Route path="journal" element={<AdminJournalPage />} />
         <Route path="homepage" element={<HomepagePage />} />
         <Route path="subscribers" element={<SubscribersPage />} />

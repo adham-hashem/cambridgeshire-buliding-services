@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Eye, Search, Filter, Download, Calendar, X, Phone, Mail, FileText, Image as ImageIcon, ChevronDown } from 'lucide-react';
+import { Eye, Search, Filter, Download, Calendar, X, Phone, Mail, FileText, Image as ImageIcon, ChevronDown, Trash2 } from 'lucide-react';
 import { PremiumModal } from '../components/PremiumModal';
 
 interface QuoteRequest {
@@ -83,6 +83,17 @@ export function QuoteRequestsPage() {
       if (selected?.id === id) setSelected({ ...selected, internal_notes: notesValue });
     } catch (error) {
       console.error('Failed to save notes:', error);
+    }
+  };
+
+  const deleteQuote = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this quote request?')) return;
+    try {
+      await supabase.from('quote_requests').delete().eq('id', id);
+      loadQuotes();
+      if (selected?.id === id) setSelected(null);
+    } catch (error) {
+      console.error('Failed to delete quote:', error);
     }
   };
 
@@ -253,10 +264,16 @@ export function QuoteRequestsPage() {
                     {new Date(q.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                   </td>
                   <td className="py-4 px-6">
-                    <button onClick={() => openDetail(q)}
-                      className="text-[#b98545] hover:text-[#d8a355] transition-colors flex items-center gap-2 hover:scale-110 transform duration-300">
-                      <Eye size={18} /> View
-                    </button>
+                    <div className="flex gap-4 items-center">
+                      <button onClick={() => openDetail(q)}
+                        className="text-[#b98545] hover:text-[#d8a355] transition-colors flex items-center gap-1 hover:scale-110 transform duration-300">
+                        <Eye size={18} /> View
+                      </button>
+                      <button onClick={() => deleteQuote(q.id)}
+                        className="text-red-500 hover:text-red-600 transition-colors flex items-center gap-1 hover:scale-110 transform duration-300">
+                        <Trash2 size={18} /> Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
