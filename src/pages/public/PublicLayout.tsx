@@ -76,7 +76,7 @@ const phone = settings?.phone || '+44 7383 608438';
             <img
               src="/logo-transparent.png"
               alt={companyName}
-              className="h-16 md:h-20 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              className="h-20 md:h-24 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </Link>
 
@@ -164,7 +164,7 @@ const phone = settings?.phone || '+44 7383 608438';
             {/* Brand */}
             <div className="lg:col-span-4 space-y-6">
               <Link to="/" className="inline-block">
-                <img src="/logo-transparent.png" alt={companyName} className="h-12 w-auto brightness-0 invert opacity-80" />
+                <img src="/logo-transparent.png" alt={companyName} className="h-16 w-auto brightness-0 invert opacity-80" />
               </Link>
               <p className="text-charcoal-400 text-sm leading-relaxed font-body max-w-xs">
                 Professional building, renovation, and property improvement services. From kitchens and bathrooms to tiling, flooring, driveways and landscaping — we deliver exceptional workmanship across Cambridgeshire.
