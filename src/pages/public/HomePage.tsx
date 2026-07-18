@@ -230,8 +230,8 @@ export function HomePage() {
             {services.map((service, i) => {
               return (
                 <div key={service.id} className={`group bg-cream-50 p-8 md:p-10 hover:bg-white transition-all duration-500 ${servicesView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 80}ms` }}>
-                  <div className="w-14 h-14 rounded-full overflow-hidden mb-6 border-2 border-charcoal-200 group-hover:border-navy-800 transition-colors duration-300">
-                    <img src={`/services images/${service.name}.webp`} alt={service.name} className="w-full h-full object-cover" />
+                  <div className="relative w-20 h-20 shrink-0 rounded-full overflow-hidden mb-6 border-2 border-charcoal-200 group-hover:border-navy-800 transition-colors duration-300 bg-white">
+                    <img src={`/services images/${service.name}.webp`} alt={service.name} className="absolute inset-0 w-full h-full object-cover object-center scale-125" />
                   </div>
                   <h3 className="text-xl font-medium font-display mb-3 tracking-tight group-hover:text-navy-900 transition-colors duration-300">
                     <Link to="/services" className="hover:underline">{service.name}</Link>

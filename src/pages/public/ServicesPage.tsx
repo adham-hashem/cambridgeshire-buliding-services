@@ -119,8 +119,8 @@ export function ServicesPage() {
                     active ? 'bg-navy-800 text-white' : 'text-charcoal-500 hover:text-charcoal-900 bg-cream-100'
                   }`}
                 >
-                  <div className="w-4 h-4 rounded-full overflow-hidden shrink-0">
-                    <img src={imgSrc} alt={cat} className="w-full h-full object-cover" />
+                  <div className="relative w-4 h-4 rounded-full overflow-hidden shrink-0 bg-white">
+                    <img src={imgSrc} alt={cat} className="absolute inset-0 w-full h-full object-cover object-center scale-[1.35]" />
                   </div>
                   {cat}
                 </button>
@@ -145,8 +145,8 @@ export function ServicesPage() {
                 return (
                   <div key={cat}>
                     <div className="flex items-center gap-4 mb-10 md:mb-12">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-charcoal-200">
-                        <img src={imgSrc} alt={cat} className="w-full h-full object-cover" />
+                      <div className="relative w-16 h-16 shrink-0 rounded-full overflow-hidden border-2 border-charcoal-200 bg-white">
+                        <img src={imgSrc} alt={cat} className="absolute inset-0 w-full h-full object-cover object-center scale-[1.35]" />
                       </div>
                       <h2 className="text-2xl md:text-3xl font-light font-display tracking-tight">{cat}</h2>
                       <div className="flex-1 h-px bg-charcoal-200/50" />
@@ -196,8 +196,8 @@ export function ServicesPage() {
 function ServiceCard({ service, index, inView }: { service: Service; index: number; inView: boolean }) {
   return (
     <div className={`group bg-white rounded-2xl border border-charcoal-100 overflow-hidden hover-lift p-6 md:p-8 ${inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${index * 60}ms` }}>
-      <div className="w-14 h-14 rounded-full overflow-hidden mb-5 border-2 border-charcoal-200 group-hover:border-navy-800 transition-colors duration-300">
-        <img src={`/services images/${service.name}.webp`} alt={service.name} className="w-full h-full object-cover" />
+      <div className="relative w-20 h-20 shrink-0 rounded-full overflow-hidden mb-5 border-2 border-charcoal-200 group-hover:border-navy-800 transition-colors duration-300 bg-white">
+        <img src={`/services images/${service.name}.webp`} alt={service.name} className="absolute inset-0 w-full h-full object-cover object-center scale-[1.35]" />
       </div>
       {service.featured && (
         <span className="inline-block px-2 py-0.5 bg-gold-50 text-gold-700 text-[9px] tracking-widest uppercase font-body font-medium mb-3">Featured</span>
