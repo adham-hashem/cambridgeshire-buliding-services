@@ -28,8 +28,6 @@ export function DashboardLayout() {
     { icon: Home, label: 'Projects', path: '/dashboard/projects' },
     { icon: Settings, label: 'Services', path: '/dashboard/services' },
     { icon: BookOpen, label: 'Journal', path: '/dashboard/journal' },
-
-    { icon: Users, label: 'Profile', path: '/dashboard/profile' },
   ];
 
   const isCurrentPath = (path: string) => location.pathname === path;

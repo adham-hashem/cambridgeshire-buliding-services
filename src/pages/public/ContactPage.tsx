@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { sendQuoteToTelegram } from '../../lib/telegram';
 import {
   Send, Phone, Mail as MailIcon, MapPin, Clock,
   ChevronRight, Upload, X, Check, AlertCircle,
@@ -158,49 +159,8 @@ export function ContactPage() {
 
       if (error) throw error;
 
-      // Send Telegram notification
-      try {
-        const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-        const chatId = import.meta.env.VITE_TELEGRAM_ADMIN_CHAT_ID;
-        
-        if (token && chatId) {
-          const messageText = formData.message ? formData.message.trim() : 'None';
-          const actualBudget = formData.budget === 'Custom Budget' && formData.custom_budget ? formData.custom_budget : formData.budget;
-          
-          const text = [
-            '🔔 New Quote Request! 🔔',
-            '',
-            '👤 Name: ' + formData.full_name,
-            '📞 Phone: ' + formData.phone,
-            '✉️ Email: ' + (formData.email || 'Not Provided'),
-            '',
-            '🛠 Service: ' + formData.service_required,
-            '💰 Budget: ' + actualBudget,
-            '',
-            '📝 Project Description:',
-            messageText,
-            '',
-            '📅 Submitted at: ' + new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' }) + ' (UK Time)',
-          ].join('\n');
-
-          const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: chatId,
-              text: text,
-            }),
-          });
-          const tgData = await tgRes.json();
-          if (!tgData.ok) {
-            console.error('Telegram API error:', tgData);
-          }
-        } else {
-          console.warn('Telegram credentials not found in env');
-        }
-      } catch (err) {
-        console.error('Failed to send telegram notification:', err);
-      }
+      // Send Telegram notification (non-blocking, won't prevent form success)
+      sendQuoteToTelegram(formData);
 
       setFormData(emptyForm);
       setFiles([]);
