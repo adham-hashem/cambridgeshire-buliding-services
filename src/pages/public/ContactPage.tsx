@@ -8,6 +8,7 @@ import {
   ChevronRight, Upload, X, Check, AlertCircle,
 } from 'lucide-react';
 
+
 const ALL_SERVICES = [
   'Natural Turf Installation',
   'Artificial Grass Installation',
