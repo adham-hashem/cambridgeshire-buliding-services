@@ -167,24 +167,36 @@ export function ContactPage() {
           const messageText = formData.message ? formData.message.trim() : 'None';
           const actualBudget = formData.budget === 'Custom Budget' && formData.custom_budget ? formData.custom_budget : formData.budget;
           
-          const text = `🔔 *New Quote Request!* 🔔\n\n` +
-                       `👤 *Name:* ${formData.full_name}\n` +
-                       `📞 *Phone:* ${formData.phone}\n` +
-                       `✉️ *Email:* ${formData.email || 'Not Provided'}\n\n` +
-                       `🛠 *Service:* ${formData.service_required}\n` +
-                       `💰 *Budget:* ${actualBudget}\n\n` +
-                       `📝 *Project Description:*\n${messageText}\n\n` +
-                       `📅 _Submitted at: ${new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' })}_`;
+          const text = [
+            '🔔 New Quote Request! 🔔',
+            '',
+            '👤 Name: ' + formData.full_name,
+            '📞 Phone: ' + formData.phone,
+            '✉️ Email: ' + (formData.email || 'Not Provided'),
+            '',
+            '🛠 Service: ' + formData.service_required,
+            '💰 Budget: ' + actualBudget,
+            '',
+            '📝 Project Description:',
+            messageText,
+            '',
+            '📅 Submitted at: ' + new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' }) + ' (UK Time)',
+          ].join('\n');
 
-          await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               chat_id: chatId,
               text: text,
-              parse_mode: 'Markdown'
             }),
           });
+          const tgData = await tgRes.json();
+          if (!tgData.ok) {
+            console.error('Telegram API error:', tgData);
+          }
+        } else {
+          console.warn('Telegram credentials not found in env');
         }
       } catch (err) {
         console.error('Failed to send telegram notification:', err);
