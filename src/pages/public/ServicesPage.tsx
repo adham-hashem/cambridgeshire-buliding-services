@@ -86,7 +86,7 @@ export function ServicesPage() {
       {/* Hero */}
       <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Building services" className="w-full h-full object-cover" />
+          <img src="/two images/pro2.webp" alt="Building services" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-charcoal-900/45" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 text-center space-y-5 pt-20">

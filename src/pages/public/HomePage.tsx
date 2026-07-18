@@ -190,25 +190,6 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ===== TRUST BAR ===== */}
-      <section className="bg-white border-b border-charcoal-200/50">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 py-10 md:py-14">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-4">
-            {trust.map((item, i) => {
-              const Icon = trustIcons[item.icon] || Shield;
-              return (
-                <div key={item.id || i} className="flex flex-col items-center text-center gap-3 animate-reveal-up" style={{ animationDelay: `${i * 80}ms` }}>
-                  <div className="w-11 h-11 rounded-full bg-navy-50 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-navy-800" />
-                  </div>
-                  <span className="text-charcoal-700 text-[11px] tracking-widest uppercase font-body font-medium">{item.label}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* ===== SERVICES ===== */}
       <section ref={servicesView.ref} className="section-padding bg-cream-50">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -337,7 +318,7 @@ export function HomePage() {
                   <img src="https://images.pexels.com/photos/6585757/pexels-photo-6585757.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Bathroom renovation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="overflow-hidden h-64">
-                  <img src="https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Patio installation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <img src="/two images/pro2.webp" alt="Patio installation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                 </div>
               </div>
             </div>
@@ -442,7 +423,7 @@ export function HomePage() {
       {/* ===== FINAL CTA ===== */}
       <section className="relative py-32 md:py-44 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://images.pexels.com/photos/323552/pexels-photo-323552.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Building services" className="w-full h-full object-cover" />
+          <img src="/two images/pro.webp" alt="Building services" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-charcoal-900/60" />
         </div>
         <div className="max-w-4xl mx-auto px-6 md:px-10 text-center relative z-10 space-y-8">
@@ -459,6 +440,25 @@ export function HomePage() {
             <a href="tel:+447383608438" className="px-8 py-3.5 bg-transparent text-white/70 font-medium text-[11px] tracking-[0.2em] uppercase border border-white/20 hover:border-white/40 hover:text-white transition-all duration-300 font-body inline-flex items-center gap-2">
               <Phone size={14} /> +44 7383 608438
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== TRUST BAR ===== */}
+      <section className="bg-white border-b border-charcoal-200/50">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-10 md:py-14">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-4">
+            {trust.map((item, i) => {
+              const Icon = trustIcons[item.icon] || Shield;
+              return (
+                <div key={item.id || i} className="flex flex-col items-center text-center gap-3 animate-reveal-up" style={{ animationDelay: `${i * 80}ms` }}>
+                  <div className="w-11 h-11 rounded-full bg-navy-50 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-navy-800" />
+                  </div>
+                  <span className="text-charcoal-700 text-[11px] tracking-widest uppercase font-body font-medium">{item.label}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
