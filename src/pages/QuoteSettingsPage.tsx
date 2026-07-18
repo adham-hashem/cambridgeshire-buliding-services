@@ -32,6 +32,7 @@ interface QuoteFormSettings {
   require_message: boolean;
   show_attachments: boolean;
   require_attachments: boolean;
+  show_custom_budget: boolean;
 }
 
 interface ServiceOption {
@@ -56,6 +57,7 @@ export function QuoteSettingsPage() {
     require_message: false,
     show_attachments: true,
     require_attachments: false,
+    show_custom_budget: true,
   });
   const [budgetOptions, setBudgetOptions] = useState<BudgetOption[]>([]);
   const [services, setServices] = useState<ServiceOption[]>([]);
@@ -94,7 +96,10 @@ export function QuoteSettingsPage() {
 
       if (error) throw error;
       if (data) {
-        setSettings(data);
+        setSettings({
+          ...data,
+          show_custom_budget: data.show_custom_budget ?? true
+        });
       } else {
         // Create default settings if not exists
         const { data: newRow } = await supabase
@@ -102,7 +107,12 @@ export function QuoteSettingsPage() {
           .insert({})
           .select()
           .single();
-        if (newRow) setSettings(newRow);
+        if (newRow) {
+          setSettings({
+            ...newRow,
+            show_custom_budget: newRow.show_custom_budget ?? true
+          });
+        }
       }
     } catch (e) {
       console.warn('Could not load quote form settings (migration might not be applied yet):', e);
@@ -146,7 +156,7 @@ export function QuoteSettingsPage() {
     const updatedSettings = { ...settings, [field]: value };
     
     // Automatic field interaction rules
-    if (field.startsWith('show_') && !value) {
+    if (field.startsWith('show_') && !value && field !== 'show_custom_budget') {
       const requireField = field.replace('show_', 'require_') as keyof QuoteFormSettings;
       (updatedSettings as any)[requireField] = false;
     }
@@ -171,7 +181,12 @@ export function QuoteSettingsPage() {
           .select()
           .single();
         if (error) throw error;
-        if (data) setSettings(data);
+        if (data) {
+          setSettings({
+            ...data,
+            show_custom_budget: data.show_custom_budget ?? true
+          });
+        }
       }
       showSuccess('Form fields configuration updated');
     } catch (error) {
@@ -397,6 +412,16 @@ export function QuoteSettingsPage() {
                     className={`text-[#b98545] ${!settings.show_budget ? 'opacity-40 cursor-not-allowed' : ''}`}
                   >
                     {settings.require_budget ? <ToggleRight size={32} /> : <ToggleLeft size={32} className="text-[#9ca3af]" />}
+                  </button>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <span className="text-sm text-charcoal-600">Allow "Custom Budget"</span>
+                  <button 
+                    disabled={!settings.show_budget}
+                    onClick={() => updateSettingField('show_custom_budget', !settings.show_custom_budget)} 
+                    className={`text-[#b98545] ${!settings.show_budget ? 'opacity-40 cursor-not-allowed' : ''}`}
+                  >
+                    {settings.show_custom_budget ? <ToggleRight size={32} /> : <ToggleLeft size={32} className="text-[#9ca3af]" />}
                   </button>
                 </label>
               </div>

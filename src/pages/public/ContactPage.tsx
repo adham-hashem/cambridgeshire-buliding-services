@@ -17,6 +17,7 @@ interface QuoteFormSettings {
   require_message: boolean;
   show_attachments: boolean;
   require_attachments: boolean;
+  show_custom_budget: boolean;
 }
 
 const DEFAULT_SERVICES = [
@@ -111,6 +112,7 @@ export function ContactPage() {
     require_message: false,
     show_attachments: true,
     require_attachments: false,
+    show_custom_budget: true,
   });
 
   useEffect(() => {
@@ -124,7 +126,10 @@ export function ContactPage() {
         .select('*')
         .maybeSingle();
       if (settingsData) {
-        setSettings(settingsData);
+        setSettings({
+          ...settingsData,
+          show_custom_budget: settingsData.show_custom_budget ?? true
+        });
       }
 
       const { data: budgetsData } = await supabase
@@ -248,7 +253,7 @@ export function ContactPage() {
         email: settings.show_email ? (formData.email.trim() || null) : null,
         service_required: formData.service_required,
         budget: settings.show_budget ? formData.budget : null,
-        custom_budget: (settings.show_budget && formData.budget === 'Custom Budget') ? formData.custom_budget.trim() || null : null,
+        custom_budget: (settings.show_budget && settings.show_custom_budget && formData.budget === 'Custom Budget') ? formData.custom_budget.trim() || null : null,
         message: settings.show_message ? (formData.message.trim() || null) : null,
         attachment_paths: attachmentPaths.length > 0 ? attachmentPaths : null,
         status: 'new',
@@ -261,7 +266,7 @@ export function ContactPage() {
         ...formData,
         email: settings.show_email ? formData.email : '',
         budget: settings.show_budget ? formData.budget : 'Hidden by Admin',
-        custom_budget: (settings.show_budget && formData.budget === 'Custom Budget') ? formData.custom_budget : '',
+        custom_budget: (settings.show_budget && settings.show_custom_budget && formData.budget === 'Custom Budget') ? formData.custom_budget : '',
         message: settings.show_message ? formData.message : 'Hidden by Admin',
       }, attachmentUrls.length > 0 ? attachmentUrls : undefined);
 
@@ -381,7 +386,7 @@ export function ContactPage() {
                           Budget {settings.require_budget && <span className="text-red-500">*</span>}
                         </label>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
-                          {budgets.map((b) => {
+                          {budgets.filter(b => settings.show_custom_budget || b.toLowerCase() !== 'custom budget').map((b) => {
                             const selected = formData.budget === b;
                             return (
                               <button key={b} type="button" onClick={() => update('budget', b)}
@@ -396,7 +401,7 @@ export function ContactPage() {
                       </div>
 
                       {/* Custom Budget Input */}
-                      {formData.budget === 'Custom Budget' && (
+                      {settings.show_custom_budget && formData.budget === 'Custom Budget' && (
                         <div className="animate-fade-in">
                           <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">Enter Your Budget</label>
                           <input type="text" value={formData.custom_budget} onChange={(e) => update('custom_budget', e.target.value)} className="input-field" placeholder="e.g. £3,500" />
