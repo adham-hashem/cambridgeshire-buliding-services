@@ -158,6 +158,38 @@ export function ContactPage() {
 
       if (error) throw error;
 
+      // Send Telegram notification
+      try {
+        const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+        const chatId = import.meta.env.VITE_TELEGRAM_ADMIN_CHAT_ID;
+        
+        if (token && chatId) {
+          const messageText = formData.message ? formData.message.trim() : 'None';
+          const actualBudget = formData.budget === 'Custom Budget' && formData.custom_budget ? formData.custom_budget : formData.budget;
+          
+          const text = `🔔 *New Quote Request!* 🔔\n\n` +
+                       `👤 *Name:* ${formData.full_name}\n` +
+                       `📞 *Phone:* ${formData.phone}\n` +
+                       `✉️ *Email:* ${formData.email || 'Not Provided'}\n\n` +
+                       `🛠 *Service:* ${formData.service_required}\n` +
+                       `💰 *Budget:* ${actualBudget}\n\n` +
+                       `📝 *Project Description:*\n${messageText}\n\n` +
+                       `📅 _Submitted at: ${new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' })}_`;
+
+          await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text: text,
+              parse_mode: 'Markdown'
+            }),
+          });
+        }
+      } catch (err) {
+        console.error('Failed to send telegram notification:', err);
+      }
+
       setFormData(emptyForm);
       setFiles([]);
       setFileErrors([]);
