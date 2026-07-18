@@ -1,16 +1,25 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { sendQuoteToTelegram } from '../../lib/telegram';
 import {
   Send, Phone, Mail as MailIcon, MapPin, Clock,
-  ChevronRight, Upload, X, Check, AlertCircle,
+  Upload, X, Check, AlertCircle,
 } from 'lucide-react';
 
+interface QuoteFormSettings {
+  show_email: boolean;
+  require_email: boolean;
+  show_budget: boolean;
+  require_budget: boolean;
+  show_message: boolean;
+  require_message: boolean;
+  show_attachments: boolean;
+  require_attachments: boolean;
+}
 
-
-const ALL_SERVICES = [
+const DEFAULT_SERVICES = [
   'Natural Turf Installation',
   'Artificial Grass Installation',
   'Patio Installation',
@@ -41,7 +50,8 @@ const ALL_SERVICES = [
   'Property Maintenance & Repairs Before Sale or Letting',
 ];
 
-const BUDGET_OPTIONS = [
+const DEFAULT_BUDGETS = [
+  'Under £500',
   'Under £1,000',
   '£1,000 – £5,000',
   '£5,000 – £10,000',
@@ -90,6 +100,61 @@ export function ContactPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [services, setServices] = useState<string[]>(DEFAULT_SERVICES);
+  const [budgets, setBudgets] = useState<string[]>(DEFAULT_BUDGETS);
+  const [settings, setSettings] = useState<QuoteFormSettings>({
+    show_email: true,
+    require_email: false,
+    show_budget: true,
+    require_budget: true,
+    show_message: true,
+    require_message: false,
+    show_attachments: true,
+    require_attachments: false,
+  });
+
+  useEffect(() => {
+    loadFormSettings();
+  }, []);
+
+  const loadFormSettings = async () => {
+    try {
+      const { data: settingsData } = await supabase
+        .from('quote_form_settings')
+        .select('*')
+        .maybeSingle();
+      if (settingsData) {
+        setSettings(settingsData);
+      }
+
+      const { data: budgetsData } = await supabase
+        .from('budget_options')
+        .select('label')
+        .eq('active', true)
+        .order('display_order');
+      if (budgetsData && budgetsData.length > 0) {
+        setBudgets(budgetsData.map(b => b.label));
+      }
+
+      const { data: servicesData } = await supabase
+        .from('services')
+        .select('name, published, show_in_quote')
+        .eq('published', true);
+      
+      if (servicesData) {
+        const visibleServices = servicesData
+          .filter(s => s.show_in_quote !== false)
+          .map(s => s.name);
+        
+        if (visibleServices.length > 0) {
+          setServices(visibleServices);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load dynamic quote form settings:', error);
+    }
+  };
+
   const update = (field: keyof FormData, value: string) => {
     setFormData((p) => ({ ...p, [field]: value }));
     setErrorMsg('');
@@ -135,8 +200,32 @@ export function ContactPage() {
   const handleSubmit = async () => {
     setErrorMsg('');
 
-    if (!formData.full_name.trim() || !formData.phone.trim() || !formData.service_required || !formData.budget) {
-      setErrorMsg('Please fill in all required fields.');
+    if (!formData.full_name.trim()) {
+      setErrorMsg('Please enter your name.');
+      return;
+    }
+    if (!formData.phone.trim()) {
+      setErrorMsg('Please enter your phone number.');
+      return;
+    }
+    if (settings.show_email && settings.require_email && !formData.email.trim()) {
+      setErrorMsg('Please enter your email address.');
+      return;
+    }
+    if (!formData.service_required) {
+      setErrorMsg('Please select a service.');
+      return;
+    }
+    if (settings.show_budget && settings.require_budget && !formData.budget) {
+      setErrorMsg('Please select a budget.');
+      return;
+    }
+    if (settings.show_message && settings.require_message && !formData.message.trim()) {
+      setErrorMsg('Please enter a project description.');
+      return;
+    }
+    if (settings.show_attachments && settings.require_attachments && files.length === 0) {
+      setErrorMsg('Please upload at least one photo.');
       return;
     }
 
@@ -144,7 +233,7 @@ export function ContactPage() {
     try {
       let attachmentPaths: string[] = [];
       let attachmentUrls: string[] = [];
-      if (files.length > 0) {
+      if (settings.show_attachments && files.length > 0) {
         attachmentPaths = await Promise.all(files.map((f) => uploadAttachment(f)));
         // Generate public URLs for each uploaded file
         attachmentUrls = attachmentPaths.map((path) => {
@@ -156,11 +245,11 @@ export function ContactPage() {
       const { error } = await supabase.from('quote_requests').insert({
         full_name: formData.full_name.trim(),
         phone: formData.phone.trim(),
-        email: formData.email.trim() || null,
+        email: settings.show_email ? (formData.email.trim() || null) : null,
         service_required: formData.service_required,
-        budget: formData.budget,
-        custom_budget: formData.budget === 'Custom Budget' ? formData.custom_budget.trim() || null : null,
-        message: formData.message.trim() || null,
+        budget: settings.show_budget ? formData.budget : null,
+        custom_budget: (settings.show_budget && formData.budget === 'Custom Budget') ? formData.custom_budget.trim() || null : null,
+        message: settings.show_message ? (formData.message.trim() || null) : null,
         attachment_paths: attachmentPaths.length > 0 ? attachmentPaths : null,
         status: 'new',
       });
@@ -168,7 +257,13 @@ export function ContactPage() {
       if (error) throw error;
 
       // Send Telegram notification with attachment URLs (non-blocking, won't prevent form success)
-      sendQuoteToTelegram(formData, attachmentUrls.length > 0 ? attachmentUrls : undefined);
+      sendQuoteToTelegram({
+        ...formData,
+        email: settings.show_email ? formData.email : '',
+        budget: settings.show_budget ? formData.budget : 'Hidden by Admin',
+        custom_budget: (settings.show_budget && formData.budget === 'Custom Budget') ? formData.custom_budget : '',
+        message: settings.show_message ? formData.message : 'Hidden by Admin',
+      }, attachmentUrls.length > 0 ? attachmentUrls : undefined);
 
       setFormData(emptyForm);
       setFiles([]);
@@ -252,15 +347,19 @@ export function ContactPage() {
                   </div>
 
                   {/* Phone + Email */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className={`grid grid-cols-1 ${settings.show_email ? 'md:grid-cols-2' : ''} gap-5`}>
                     <div>
                       <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">Phone Number <span className="text-red-500">*</span></label>
                       <input type="tel" value={formData.phone} onChange={(e) => update('phone', e.target.value)} className="input-field" placeholder="07XXX XXXXXX" />
                     </div>
-                    <div>
-                      <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">Email Address <span className="text-charcoal-400 text-xs font-normal">(Optional)</span></label>
-                      <input type="email" value={formData.email} onChange={(e) => update('email', e.target.value)} className="input-field" placeholder="john@example.com" />
-                    </div>
+                    {settings.show_email && (
+                      <div>
+                        <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">
+                          Email Address {settings.require_email ? <span className="text-red-500">*</span> : <span className="text-charcoal-400 text-xs font-normal">(Optional)</span>}
+                        </label>
+                        <input type="email" value={formData.email} onChange={(e) => update('email', e.target.value)} className="input-field" placeholder="john@example.com" />
+                      </div>
+                    )}
                   </div>
 
                   {/* Service Required */}
@@ -268,90 +367,104 @@ export function ContactPage() {
                     <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">Select Service <span className="text-red-500">*</span></label>
                     <select value={formData.service_required} onChange={(e) => update('service_required', e.target.value)} className="input-field cursor-pointer">
                       <option value="">Choose a service...</option>
-                      {ALL_SERVICES.map((s) => (
+                      {services.map((s) => (
                         <option key={s} value={s}>{s}</option>
                       ))}
                     </select>
                   </div>
 
                   {/* Budget */}
-                  <div>
-                    <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">Budget <span className="text-red-500">*</span></label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
-                      {BUDGET_OPTIONS.map((b) => {
-                        const selected = formData.budget === b;
-                        return (
-                          <button key={b} type="button" onClick={() => update('budget', b)}
-                            className={`px-4 py-3 rounded-xl text-sm font-medium font-body transition-all duration-200 border text-center ${
-                              selected ? 'bg-navy-50 border-navy-300 text-navy-800 shadow-sm' : 'bg-cream-50 border-charcoal-200 text-charcoal-500 hover:border-navy-200'
-                            }`}>
-                            {b}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
+                  {settings.show_budget && (
+                    <>
+                      <div>
+                        <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">
+                          Budget {settings.require_budget && <span className="text-red-500">*</span>}
+                        </label>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+                          {budgets.map((b) => {
+                            const selected = formData.budget === b;
+                            return (
+                              <button key={b} type="button" onClick={() => update('budget', b)}
+                                className={`px-4 py-3 rounded-xl text-sm font-medium font-body transition-all duration-200 border text-center ${
+                                  selected ? 'bg-navy-50 border-navy-300 text-navy-800 shadow-sm' : 'bg-cream-50 border-charcoal-200 text-charcoal-500 hover:border-navy-200'
+                                }`}>
+                                {b}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
 
-                  {/* Custom Budget Input */}
-                  {formData.budget === 'Custom Budget' && (
-                    <div className="animate-fade-in">
-                      <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">Enter Your Budget</label>
-                      <input type="text" value={formData.custom_budget} onChange={(e) => update('custom_budget', e.target.value)} className="input-field" placeholder="e.g. £3,500" />
-                    </div>
+                      {/* Custom Budget Input */}
+                      {formData.budget === 'Custom Budget' && (
+                        <div className="animate-fade-in">
+                          <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">Enter Your Budget</label>
+                          <input type="text" value={formData.custom_budget} onChange={(e) => update('custom_budget', e.target.value)} className="input-field" placeholder="e.g. £3,500" />
+                        </div>
+                      )}
+                    </>
                   )}
 
                   {/* Project Description */}
-                  <div>
-                    <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">Project Description <span className="text-charcoal-400 text-xs font-normal">(Optional)</span></label>
-                    <textarea value={formData.message} onChange={(e) => update('message', e.target.value)}
-                      className="textarea-field h-28" placeholder="Tell us about your project, any specific requirements, or ideas you have in mind..." />
-                  </div>
+                  {settings.show_message && (
+                    <div>
+                      <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">
+                        Project Description {settings.require_message ? <span className="text-red-500">*</span> : <span className="text-charcoal-400 text-xs font-normal">(Optional)</span>}
+                      </label>
+                      <textarea value={formData.message} onChange={(e) => update('message', e.target.value)}
+                        className="textarea-field h-28" placeholder="Tell us about your project, any specific requirements, or ideas you have in mind..." />
+                    </div>
+                  )}
 
                   {/* Image Upload */}
-                  <div>
-                    <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">Upload Photos <span className="text-charcoal-400 text-xs font-normal">(Optional)</span></label>
-                    <p className="text-charcoal-400 text-xs font-body mb-3">Share photos of the area or project. JPG, PNG, WEBP, PDF up to 10MB each.</p>
-                    <div
-                      onDragOver={(e) => { e.preventDefault(); }}
-                      onDrop={handleDrop}
-                      onClick={() => inputRef.current?.click()}
-                      className="border-2 border-dashed border-charcoal-200 rounded-xl p-6 text-center cursor-pointer hover:border-navy-300 hover:bg-navy-50/20 transition-all duration-200">
-                      <input ref={inputRef} type="file" multiple accept=".jpg,.jpeg,.png,.webp,.pdf" onChange={handleFileChange} className="hidden" />
-                      <Upload className="w-7 h-7 text-charcoal-300 mx-auto mb-2" />
-                      <p className="text-charcoal-600 text-sm font-medium font-body">Drop files here or click to upload</p>
-                      <p className="text-charcoal-400 text-xs font-body mt-1">Multiple files allowed</p>
+                  {settings.show_attachments && (
+                    <div>
+                      <label className="block text-charcoal-700 font-medium mb-1.5 text-sm font-body">
+                        Upload Photos {settings.require_attachments ? <span className="text-red-500">*</span> : <span className="text-charcoal-400 text-xs font-normal">(Optional)</span>}
+                      </label>
+                      <p className="text-charcoal-400 text-xs font-body mb-3">Share photos of the area or project. JPG, PNG, WEBP, PDF up to 10MB each.</p>
+                      <div
+                        onDragOver={(e) => { e.preventDefault(); }}
+                        onDrop={handleDrop}
+                        onClick={() => inputRef.current?.click()}
+                        className="border-2 border-dashed border-charcoal-200 rounded-xl p-6 text-center cursor-pointer hover:border-navy-300 hover:bg-navy-50/20 transition-all duration-200">
+                        <input ref={inputRef} type="file" multiple accept=".jpg,.jpeg,.png,.webp,.pdf" onChange={handleFileChange} className="hidden" />
+                        <Upload className="w-7 h-7 text-charcoal-300 mx-auto mb-2" />
+                        <p className="text-charcoal-600 text-sm font-medium font-body">Drop files here or click to upload</p>
+                        <p className="text-charcoal-400 text-xs font-body mt-1">Multiple files allowed</p>
+                      </div>
+
+                      {/* File Errors */}
+                      {fileErrors.length > 0 && (
+                        <div className="mt-3 space-y-1">
+                          {fileErrors.map((err, i) => (
+                            <p key={i} className="text-red-500 text-xs font-body flex items-center gap-1.5">
+                              <AlertCircle size={12} /> {err}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Selected Files */}
+                      {files.length > 0 && (
+                        <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-2">
+                          {files.map((f, i) => (
+                            <div key={i} className="relative group rounded-lg overflow-hidden border border-charcoal-100 bg-cream-50 p-2 flex items-center gap-2">
+                              {f.type.startsWith('image/') ? (
+                                <img src={URL.createObjectURL(f)} alt={f.name} className="w-full h-16 object-cover rounded" />
+                              ) : (
+                                <div className="w-full h-16 flex items-center justify-center text-charcoal-400 text-xs font-body">{f.name.split('.').pop()?.toUpperCase()}</div>
+                              )}
+                              <button type="button" onClick={() => removeFile(i)}
+                                className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                                <X size={10} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-
-                    {/* File Errors */}
-                    {fileErrors.length > 0 && (
-                      <div className="mt-3 space-y-1">
-                        {fileErrors.map((err, i) => (
-                          <p key={i} className="text-red-500 text-xs font-body flex items-center gap-1.5">
-                            <AlertCircle size={12} /> {err}
-                          </p>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Selected Files */}
-                    {files.length > 0 && (
-                      <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-2">
-                        {files.map((f, i) => (
-                          <div key={i} className="relative group rounded-lg overflow-hidden border border-charcoal-100 bg-cream-50 p-2 flex items-center gap-2">
-                            {f.type.startsWith('image/') ? (
-                              <img src={URL.createObjectURL(f)} alt={f.name} className="w-full h-16 object-cover rounded" />
-                            ) : (
-                              <div className="w-full h-16 flex items-center justify-center text-charcoal-400 text-xs font-body">{f.name.split('.').pop()?.toUpperCase()}</div>
-                            )}
-                            <button type="button" onClick={() => removeFile(i)}
-                              className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
-                              <X size={10} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  )}
 
                   {/* Error Message */}
                   {errorMsg && (

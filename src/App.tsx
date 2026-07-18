@@ -26,6 +26,7 @@ import { SubscribersPage } from './pages/admin/SubscribersPage';
 import { MediaPage } from './pages/admin/MediaPage';
 import { ProfilePage } from './pages/admin/ProfilePage';
 import { QuoteRequestsPage } from './pages/admin/QuoteRequestsPage';
+import { QuoteSettingsPage } from './pages/admin/QuoteSettingsPage';
 
 // Public website pages
 import { PublicLayout } from './pages/public/PublicLayout';
@@ -96,6 +97,7 @@ function AppRoutes() {
         <Route path="transformations" element={<TransformationsPage />} />
         <Route path="consultations" element={<ConsultationsPage />} />
         <Route path="quotes" element={<QuoteRequestsPage />} />
+        <Route path="quotes/settings" element={<QuoteSettingsPage />} />
 
         <Route path="journal" element={<AdminJournalPage />} />
         <Route path="homepage" element={<HomepagePage />} />

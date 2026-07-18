@@ -1,8 +1,8 @@
 const TELEGRAM_BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN || '';
 const TELEGRAM_CHAT_IDS = (import.meta.env.VITE_TELEGRAM_ADMIN_CHAT_ID || '')
   .split(',')
-  .map(id => id.trim())
-  .filter(id => id);
+  .map((id: string) => id.trim())
+  .filter((id: string) => id);
 
 export async function sendQuoteToTelegram(data: {
   full_name: string;

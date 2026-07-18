@@ -1,0 +1,1 @@
+export { QuoteSettingsPage } from '../QuoteSettingsPage';

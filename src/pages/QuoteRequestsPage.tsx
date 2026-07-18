@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Eye, Search, Filter, Download, Calendar, X, Phone, Mail, FileText, Image as ImageIcon, ChevronDown, Trash2 } from 'lucide-react';
+import { Eye, Search, Filter, Download, Calendar, X, Phone, Mail, FileText, Trash2, Settings } from 'lucide-react';
 import { PremiumModal } from '../components/PremiumModal';
 
 interface QuoteRequest {
@@ -42,7 +43,18 @@ const ALL_SERVICES = [
   'Property Maintenance & Repairs Before Sale or Letting',
 ];
 
+const BUDGET_OPTIONS = [
+  'Under £500',
+  'Under £1,000',
+  '£1,000 – £5,000',
+  '£5,000 – £10,000',
+  '£10,000 – £20,000',
+  '£20,000+',
+  'Custom Budget',
+];
+
 export function QuoteRequestsPage() {
+  const navigate = useNavigate();
   const [quotes, setQuotes] = useState<QuoteRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<QuoteRequest | null>(null);
@@ -50,10 +62,38 @@ export function QuoteRequestsPage() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [serviceFilter, setServiceFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState('all');
+  const [budgetFilter, setBudgetFilter] = useState('all');
   const [notesValue, setNotesValue] = useState('');
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [servicesList, setServicesList] = useState<string[]>(ALL_SERVICES);
+  const [budgetList, setBudgetList] = useState<string[]>(BUDGET_OPTIONS);
 
-  useEffect(() => { loadQuotes(); }, []);
+  useEffect(() => {
+    loadQuotes();
+    loadFilterOptions();
+  }, []);
+
+  const loadFilterOptions = async () => {
+    try {
+      const { data: svcData } = await supabase
+        .from('services')
+        .select('name')
+        .order('name');
+      if (svcData && svcData.length > 0) {
+        setServicesList(svcData.map(s => s.name));
+      }
+
+      const { data: bData } = await supabase
+        .from('budget_options')
+        .select('label')
+        .order('display_order');
+      if (bData && bData.length > 0) {
+        setBudgetList(bData.map(b => b.label));
+      }
+    } catch (error) {
+      console.error('Failed to load filter options:', error);
+    }
+  };
 
   const loadQuotes = async () => {
     try {
@@ -147,6 +187,7 @@ export function QuoteRequestsPage() {
       (q.email || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || q.status === statusFilter;
     const matchesService = serviceFilter === 'all' || q.service_required === serviceFilter;
+    const matchesBudget = budgetFilter === 'all' || q.budget === budgetFilter;
 
     let matchesDate = true;
     if (dateFilter !== 'all') {
@@ -162,7 +203,7 @@ export function QuoteRequestsPage() {
       }
     }
 
-    return matchesSearch && matchesStatus && matchesService && matchesDate;
+    return matchesSearch && matchesStatus && matchesService && matchesDate && matchesBudget;
   });
 
   const statusCounts = STATUS_OPTIONS.reduce<Record<string, number>>((acc, s) => {
@@ -181,11 +222,19 @@ export function QuoteRequestsPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="animate-fade-in">
-        <h1 className="text-4xl md:text-5xl font-bold text-navy-800 mb-2">
-          Quote Requests
-        </h1>
-        <p className="text-[#6b7280]">Manage customer quotation requests</p>
+      <div className="animate-fade-in flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-4xl md:text-5xl font-bold text-navy-800 mb-2">
+            Quote Requests
+          </h1>
+          <p className="text-[#6b7280]">Manage customer quotation requests</p>
+        </div>
+        <button
+          onClick={() => navigate('/dashboard/quotes/settings')}
+          className="btn-primary flex items-center justify-center gap-2 self-start sm:self-auto text-sm"
+        >
+          <Settings size={16} /> Configure Form Settings
+        </button>
       </div>
 
       {/* Status Summary Cards */}
@@ -210,11 +259,15 @@ export function QuoteRequestsPage() {
           <Filter className="text-[#9ca3af] w-5 h-5 flex-shrink-0" />
           <select value={serviceFilter} onChange={(e) => setServiceFilter(e.target.value)} className="select-premium min-w-[160px]">
             <option value="all">All Services</option>
-            {ALL_SERVICES.map((s) => <option key={s} value={s}>{s}</option>)}
+            {servicesList.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="select-premium">
             <option value="all">All Status</option>
             {STATUS_OPTIONS.map((s) => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
+          </select>
+          <select value={budgetFilter} onChange={(e) => setBudgetFilter(e.target.value)} className="select-premium min-w-[140px]">
+            <option value="all">All Budgets</option>
+            {budgetList.map((b) => <option key={b} value={b}>{b}</option>)}
           </select>
           <select value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} className="select-premium">
             <option value="all">All Dates</option>
