@@ -141,8 +141,14 @@ export function ContactPage() {
     setLoading(true);
     try {
       let attachmentPaths: string[] = [];
+      let attachmentUrls: string[] = [];
       if (files.length > 0) {
         attachmentPaths = await Promise.all(files.map((f) => uploadAttachment(f)));
+        // Generate public URLs for each uploaded file
+        attachmentUrls = attachmentPaths.map((path) => {
+          const { data } = supabase.storage.from('consultations').getPublicUrl(path);
+          return data.publicUrl;
+        });
       }
 
       const { error } = await supabase.from('quote_requests').insert({
@@ -159,8 +165,8 @@ export function ContactPage() {
 
       if (error) throw error;
 
-      // Send Telegram notification (non-blocking, won't prevent form success)
-      sendQuoteToTelegram(formData);
+      // Send Telegram notification with attachment URLs (non-blocking, won't prevent form success)
+      sendQuoteToTelegram(formData, attachmentUrls.length > 0 ? attachmentUrls : undefined);
 
       setFormData(emptyForm);
       setFiles([]);
