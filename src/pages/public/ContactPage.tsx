@@ -172,6 +172,7 @@ export function ContactPage() {
       setFiles([]);
       setFileErrors([]);
       setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error('Failed to submit:', error);
       setErrorMsg('Something went wrong. Please try again or call us directly.');
