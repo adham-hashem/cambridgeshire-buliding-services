@@ -53,7 +53,7 @@ export function PublicLayout() {
 ];
 
 const phone = settings?.phone || '+44 7383 608438';
-  const email = settings?.email || '';
+  const email = settings?.email || 'cambridgeshirebuildingservices@gmail.com';
   const address = settings?.address || 'Cambridge, UK';
   const companyName = settings?.company_name || 'Cambridgeshire Building Services';
   const hours = settings?.business_hours || 'Mon–Fri: 7:30am – 6:00pm, Sat: 8:00am – 2:00pm';

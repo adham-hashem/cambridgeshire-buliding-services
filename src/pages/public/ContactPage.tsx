@@ -386,6 +386,16 @@ export function ContactPage() {
                     </div>
                   </a>
 
+                  <a href="mailto:cambridgeshirebuildingservices@gmail.com" className="flex items-center gap-3 group">
+                    <div className="w-10 h-10 rounded-lg bg-navy-50 flex items-center justify-center flex-shrink-0">
+                      <MailIcon size={16} className="text-navy-800" />
+                    </div>
+                    <div>
+                      <p className="text-charcoal-400 text-xs font-body">Email</p>
+                      <p className="text-charcoal-800 font-medium text-sm font-body group-hover:text-navy-800 transition-colors">cambridgeshirebuildingservices@gmail.com</p>
+                    </div>
+                  </a>
+
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-navy-50 flex items-center justify-center flex-shrink-0">
                       <MapPin size={16} className="text-navy-800" />
