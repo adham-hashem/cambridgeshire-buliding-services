@@ -74,10 +74,10 @@ const phone = settings?.phone || '+44 7383 608438';
           {/* Logo */}
           <Link to="/" className="flex items-center group relative z-10">
             <img
-              src="/logo-transparent.png"
+              src="/logo-transparent.webp"
               alt={companyName}
-              width={1023}
-              height={868}
+              width={330}
+              height={280}
               fetchPriority="high"
               className="h-20 md:h-24 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
@@ -169,10 +169,10 @@ const phone = settings?.phone || '+44 7383 608438';
             <div className="lg:col-span-4 space-y-6">
               <Link to="/" className="inline-block">
                 <img
-                  src="/logo-transparent.png"
+                  src="/logo-transparent.webp"
                   alt={companyName}
-                  width={1023}
-                  height={868}
+                  width={330}
+                  height={280}
                   loading="lazy"
                   className="h-16 w-auto brightness-0 invert opacity-80"
                 />

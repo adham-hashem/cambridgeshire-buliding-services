@@ -147,8 +147,8 @@ export function HomePage() {
           <img
             src="/home.webp"
             alt="Luxury renovated kitchen interior with marble flooring and premium finishes"
-            width={1609}
-            height={3213}
+            width={1920}
+            height={1080}
             fetchPriority="high"
             className="w-full h-full object-cover object-center"
           />

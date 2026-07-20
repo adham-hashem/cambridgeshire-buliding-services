@@ -45,8 +45,10 @@ export function DashboardLayout() {
         <div className="px-6 py-5 border-b border-charcoal-200">
           <div className="animate-fade-in">
             <img
-              src="/logo-transparent.png"
+              src="/logo-transparent.webp"
               alt="Cambridgeshire Building Services"
+              width={330}
+              height={280}
               className="h-12 w-auto"
             />
           </div>
