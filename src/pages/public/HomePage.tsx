@@ -147,6 +147,9 @@ export function HomePage() {
           <img
             src="/home.webp"
             alt="Luxury renovated kitchen interior with marble flooring and premium finishes"
+            width={1609}
+            height={3213}
+            fetchPriority="high"
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-charcoal-900/40" />
@@ -206,7 +209,14 @@ export function HomePage() {
               return (
                 <div key={service.id} className={`group bg-cream-50 p-8 md:p-10 hover:bg-white transition-all duration-500 ${servicesView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 80}ms` }}>
                   <div className="relative w-20 h-20 shrink-0 rounded-full overflow-hidden mb-6 border-2 border-charcoal-200 group-hover:border-navy-800 transition-colors duration-300 bg-white">
-                    <img src={`/services images/${service.name}.webp`} alt={service.name} className="absolute inset-0 w-full h-full object-cover object-center scale-125" />
+                    <img
+                      src={`/services images/${service.name}.webp`}
+                      alt={service.name}
+                      width={80}
+                      height={80}
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover object-center scale-125"
+                    />
                   </div>
                   <h3 className="text-xl font-medium font-display mb-3 tracking-tight group-hover:text-navy-900 transition-colors duration-300">
                     <Link to="/services" className="hover:underline">{service.name}</Link>
@@ -243,7 +253,14 @@ export function HomePage() {
             {projects.length > 0 ? projects.map((p, i) => (
               <Link to="/portfolio" key={p.id} className={`group block ${portfolioView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 100}ms` }}>
                 <div className="garden-image h-72 md:h-96 mb-5 overflow-hidden">
-                  <img src={p.cover_image_path ? supabase.storage.from('media').getPublicUrl(p.cover_image_path).data.publicUrl : fallbackProjectImages[i % 4]} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img
+                    src={p.cover_image_path ? supabase.storage.from('media').getPublicUrl(p.cover_image_path).data.publicUrl : fallbackProjectImages[i % 4]}
+                    alt={p.title}
+                    width={800}
+                    height={600}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
                 </div>
                 <span className="badge-cream text-[10px]">{p.category}</span>
                 <h3 className="text-xl font-light font-display mt-3 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{p.title}</h3>
@@ -301,18 +318,46 @@ export function HomePage() {
             <div className={`grid grid-cols-2 gap-4 ${aboutView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
               <div className="space-y-4">
                 <div className="overflow-hidden h-64">
-                  <img src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Kitchen renovation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <img
+                    src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    alt="Kitchen renovation"
+                    width={600}
+                    height={400}
+                    loading="lazy"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
                 </div>
                 <div className="overflow-hidden h-40">
-                  <img src="https://images.pexels.com/photos/279607/pexels-photo-279607.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Floor tiling" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <img
+                    src="https://images.pexels.com/photos/279607/pexels-photo-279607.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    alt="Floor tiling"
+                    width={600}
+                    height={400}
+                    loading="lazy"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
                 </div>
               </div>
               <div className="space-y-4 pt-12">
                 <div className="overflow-hidden h-40">
-                  <img src="https://images.pexels.com/photos/6585757/pexels-photo-6585757.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Bathroom renovation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <img
+                    src="https://images.pexels.com/photos/6585757/pexels-photo-6585757.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    alt="Bathroom renovation"
+                    width={600}
+                    height={400}
+                    loading="lazy"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
                 </div>
                 <div className="overflow-hidden h-64">
-                  <img src="/two images/pro2.webp" alt="Patio installation" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <img
+                    src="/two images/pro2.webp"
+                    alt="Patio installation"
+                    width={628}
+                    height={920}
+                    loading="lazy"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
                 </div>
               </div>
             </div>
@@ -323,7 +368,14 @@ export function HomePage() {
       {/* ===== PROCESS ===== */}
       <section className="relative py-28 md:py-36 overflow-hidden bg-charcoal-900">
         <div className="absolute inset-0 opacity-[0.07]">
-          <img src="https://images.pexels.com/photos/1084540/pexels-photo-1084540.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="" className="w-full h-full object-cover" />
+          <img
+            src="https://images.pexels.com/photos/1084540/pexels-photo-1084540.jpeg?auto=compress&cs=tinysrgb&w=1920"
+            alt=""
+            width={1920}
+            height={1080}
+            loading="lazy"
+            className="w-full h-full object-cover"
+          />
         </div>
         <div className="max-w-4xl mx-auto px-6 md:px-10 relative z-10 text-center">
           <span className="inline-block px-4 py-1.5 bg-white/8 border border-white/10 text-white/50 text-[10px] tracking-[0.25em] uppercase font-body mb-8">Our Process</span>
@@ -370,7 +422,14 @@ export function HomePage() {
             ]).map((entry, i) => (
               <div key={entry.id} className={`group ${journalView.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 100}ms` }}>
                 <div className="garden-image h-56 overflow-hidden mb-5">
-                  <img src={entry.featured_image_path ? supabase.storage.from('media').getPublicUrl(entry.featured_image_path).data.publicUrl : `https://images.pexels.com/photos/${[2724749, 279607, 6585757][i % 3]}/pexels-photo-${[2724749, 279607, 6585757][i % 3]}.jpeg?auto=compress&cs=tinysrgb&w=600`} alt={entry.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img
+                    src={entry.featured_image_path ? supabase.storage.from('media').getPublicUrl(entry.featured_image_path).data.publicUrl : `https://images.pexels.com/photos/${[2724749, 279607, 6585757][i % 3]}/pexels-photo-${[2724749, 279607, 6585757][i % 3]}.jpeg?auto=compress&cs=tinysrgb&w=600`}
+                    alt={entry.title}
+                    width={600}
+                    height={400}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
                 </div>
                 <span className="badge-cream text-[10px]">{entry.category}</span>
                 <h3 className="text-lg font-light font-display mt-3 mb-2 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{entry.title}</h3>
@@ -417,7 +476,14 @@ export function HomePage() {
       {/* ===== FINAL CTA ===== */}
       <section className="relative py-32 md:py-44 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/two images/pro.webp" alt="Building services" className="w-full h-full object-cover" />
+          <img
+            src="/two images/pro.webp"
+            alt="Building services"
+            width={1920}
+            height={1080}
+            loading="lazy"
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-charcoal-900/60" />
         </div>
         <div className="max-w-4xl mx-auto px-6 md:px-10 text-center relative z-10 space-y-8">
