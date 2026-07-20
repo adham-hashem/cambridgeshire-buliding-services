@@ -110,6 +110,7 @@ const phone = settings?.phone || '+44 7383 608438';
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="lg:hidden p-2 transition-colors"
+            aria-label="Toggle navigation menu"
           >
             {mobileOpen ? <X size={20} className="text-charcoal-900" /> : <Menu size={20} className="text-charcoal-900" />}
           </button>
@@ -170,10 +171,10 @@ const phone = settings?.phone || '+44 7383 608438';
                 Professional building, renovation, and property improvement services. From kitchens and bathrooms to tiling, flooring, driveways and landscaping — we deliver exceptional workmanship across Cambridgeshire.
               </p>
               <div className="flex items-center gap-3 pt-1">
-                <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300">
+                <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300" aria-label="Visit our Instagram page">
                   <Instagram size={14} />
                 </a>
-                <a href="https://www.facebook.com/profile.php?id=61591701435394" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300">
+                <a href="https://www.facebook.com" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300" aria-label="Visit our Facebook page">
                   <Facebook size={14} />
                 </a>
               </div>
@@ -181,10 +182,10 @@ const phone = settings?.phone || '+44 7383 608438';
 
             {/* Navigation */}
             <div className="lg:col-span-2 space-y-5">
-              <h4 className="text-white text-[11px] tracking-widest uppercase font-medium font-body">Navigation</h4>
+              <p className="text-white text-[11px] tracking-widest uppercase font-semibold font-body">Navigation</p>
               <div className="space-y-3">
                 {navLinks.map((link) => (
-                  <Link key={link.href} to={link.href} className="block text-charcoal-400 hover:text-white text-sm font-body transition-colors duration-300">
+                  <Link key={link.href} to={link.href} className="block text-charcoal-400 hover:text-white text-sm font-body transition-colors duration-300 font-medium">
                     {link.label}
                   </Link>
                 ))}
@@ -193,17 +194,17 @@ const phone = settings?.phone || '+44 7383 608438';
 
             {/* Services */}
             <div className="lg:col-span-3 space-y-5">
-              <h4 className="text-white text-[11px] tracking-widest uppercase font-medium font-body">Services</h4>
+              <p className="text-white text-[11px] tracking-widest uppercase font-semibold font-body">Services</p>
               <div className="space-y-3">
                 {['Kitchen Renovations', 'Bathroom Renovations', 'Tiling & Flooring', 'Doors & Windows', 'Driveways & Patios', 'Property Maintenance'].map((s) => (
-                  <Link key={s} to="/services" className="block text-charcoal-400 hover:text-white text-sm font-body transition-colors duration-300">{s}</Link>
+                  <Link key={s} to="/services" className="block text-charcoal-400 hover:text-white text-sm font-body transition-colors duration-300 font-medium">{s}</Link>
                 ))}
               </div>
             </div>
 
             {/* Contact */}
             <div className="lg:col-span-3 space-y-5">
-              <h4 className="text-white text-[11px] tracking-widest uppercase font-medium font-body">Get in Touch</h4>
+              <p className="text-white text-[11px] tracking-widest uppercase font-semibold font-body">Get in Touch</p>
               <div className="space-y-3">
                 <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-2.5 text-charcoal-400 hover:text-white text-sm font-body transition-colors duration-300">
                   <Phone size={13} className="flex-shrink-0" /> {phone}
@@ -227,10 +228,10 @@ const phone = settings?.phone || '+44 7383 608438';
         {/* Bottom Bar */}
         <div className="border-t border-charcoal-800">
           <div className="max-w-7xl mx-auto px-6 md:px-10 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
-            <p className="text-charcoal-600 text-[11px] tracking-wider font-body">&copy; {new Date().getFullYear()} {companyName}. All rights reserved.</p>
-            <div className="flex items-center gap-6 text-[11px] tracking-wider text-charcoal-600 font-body">
-              <span className="hover:text-charcoal-400 transition-colors cursor-pointer">Privacy Policy</span>
-              <span className="hover:text-charcoal-400 transition-colors cursor-pointer">Terms of Service</span>
+            <p className="text-charcoal-400 text-[11px] tracking-wider font-body">&copy; {new Date().getFullYear()} {companyName}. All rights reserved.</p>
+            <div className="flex items-center gap-6 text-[11px] tracking-wider text-charcoal-400 font-body">
+              <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
             </div>
           </div>
         </div>

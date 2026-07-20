@@ -4,14 +4,12 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight, ChevronRight, ChevronDown, Shield, FileText, Award,
   Building, MapPin, Users, Package, Eye, Clock, Receipt, Smile,
-  Phone, Hammer, Star, CheckCircle2, TreePine, Layers, Bath, Home,
-  DoorOpen, Droplets, Wrench,
+  Phone, Hammer, CheckCircle2,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
 interface Service { id: string; name: string; description: string; category: string; slug: string; }
 interface Project { id: string; title: string; category: string; description: string; location: string; cover_image_path: string | null; }
-interface Testimonial { id: string; client_name: string; review_text: string; rating: number; customer_photo_path: string | null; service_used: string | null; }
 interface JournalEntry { id: string; title: string; slug: string; category: string; excerpt: string; featured_image_path: string | null; content: string; }
 interface TrustItem { id: string; label: string; icon: string; }
 interface WhyChooseItem { id: string; title: string; description: string; icon: string; }
@@ -64,11 +62,7 @@ const whyIcons: Record<string, React.ElementType> = {
   'receipt': Receipt, 'smile': Smile,
 };
 
-const serviceIconMap: Record<string, React.ElementType> = {
-  'Outdoor Improvements': TreePine, 'Tiling': Layers, 'Bathrooms': Bath,
-  'Kitchens': Home, 'Flooring': Layers, 'Doors & Windows': DoorOpen,
-  'Home Renovation': Hammer, 'Plumbing': Droplets, 'Property Maintenance': Wrench,
-};
+
 
 const fallbackProjectImages = [
   'https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=800',
@@ -217,9 +211,9 @@ export function HomePage() {
                   <h3 className="text-xl font-medium font-display mb-3 tracking-tight group-hover:text-navy-900 transition-colors duration-300">
                     <Link to="/services" className="hover:underline">{service.name}</Link>
                   </h3>
-                  <p className="text-charcoal-400 text-sm leading-relaxed font-body">{service.description}</p>
+                  <p className="text-charcoal-600 text-sm leading-relaxed font-body">{service.description}</p>
                   <Link to="/services" className="inline-flex items-center gap-1.5 text-charcoal-900 text-[11px] tracking-widest uppercase font-medium mt-6 font-body hover:gap-2.5 transition-all duration-300">
-                    Learn More <ArrowRight size={12} />
+                    Learn More<span className="sr-only"> about {service.name}</span> <ArrowRight size={12} />
                   </Link>
                 </div>
               );
@@ -242,7 +236,7 @@ export function HomePage() {
                 Selected Work
               </h2>
             </div>
-            <Link to="/portfolio" className="btn-outline inline-flex items-center gap-2 font-body self-start md:self-auto">View All <ArrowRight size={14} /></Link>
+            <Link to="/portfolio" className="btn-outline inline-flex items-center gap-2 font-body self-start md:self-auto">View All <span className="sr-only">projects</span> <ArrowRight size={14} /></Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -253,11 +247,11 @@ export function HomePage() {
                 </div>
                 <span className="badge-cream text-[10px]">{p.category}</span>
                 <h3 className="text-xl font-light font-display mt-3 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{p.title}</h3>
-                {p.location && <p className="text-charcoal-400 text-xs mt-1 font-body tracking-wider uppercase">{p.location}</p>}
-                <p className="text-charcoal-400 text-sm mt-2 line-clamp-2 font-body leading-relaxed">{p.description}</p>
+                {p.location && <p className="text-charcoal-600 text-xs mt-1 font-body tracking-wider uppercase">{p.location}</p>}
+                <p className="text-charcoal-600 text-sm mt-2 line-clamp-2 font-body leading-relaxed">{p.description}</p>
               </Link>
             )) : (
-              <p className="text-charcoal-400 font-body text-sm col-span-2 text-center py-12">Projects coming soon. Check back shortly.</p>
+              <p className="text-charcoal-600 font-body text-sm col-span-2 text-center py-12">Projects coming soon. Check back shortly.</p>
             )}
           </div>
         </div>
@@ -269,15 +263,15 @@ export function HomePage() {
           <div className="grid grid-cols-3 divide-x divide-charcoal-200/50">
             <div ref={s1.ref} className="text-center py-10 md:py-14">
               <div className="text-3xl md:text-5xl font-light font-display text-charcoal-900 tracking-tight">{s1.count}+</div>
-              <p className="text-charcoal-400 font-body text-[11px] tracking-widest uppercase mt-2">Years Experience</p>
+              <p className="text-charcoal-700 font-body text-[11px] tracking-widest uppercase mt-2 font-semibold">Years Experience</p>
             </div>
             <div ref={s2.ref} className="text-center py-10 md:py-14">
               <div className="text-3xl md:text-5xl font-light font-display text-charcoal-900 tracking-tight">{s2.count}+</div>
-              <p className="text-charcoal-400 font-body text-[11px] tracking-widest uppercase mt-2">Projects Completed</p>
+              <p className="text-charcoal-700 font-body text-[11px] tracking-widest uppercase mt-2 font-semibold">Projects Completed</p>
             </div>
             <div ref={s3.ref} className="text-center py-10 md:py-14">
               <div className="text-3xl md:text-5xl font-light font-display text-charcoal-900 tracking-tight">{s3.count}%</div>
-              <p className="text-charcoal-400 font-body text-[11px] tracking-widest uppercase mt-2">Client Satisfaction</p>
+              <p className="text-charcoal-700 font-body text-[11px] tracking-widest uppercase mt-2 font-semibold">Client Satisfaction</p>
             </div>
           </div>
         </div>
@@ -365,7 +359,7 @@ export function HomePage() {
                 Inspiration & Ideas
               </h2>
             </div>
-            <Link to="/journal" className="btn-outline inline-flex items-center gap-2 font-body self-start md:self-auto">View All <ArrowRight size={14} /></Link>
+            <Link to="/journal" className="btn-outline inline-flex items-center gap-2 font-body self-start md:self-auto">View All <span className="sr-only">journal entries</span> <ArrowRight size={14} /></Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -380,9 +374,9 @@ export function HomePage() {
                 </div>
                 <span className="badge-cream text-[10px]">{entry.category}</span>
                 <h3 className="text-lg font-light font-display mt-3 mb-2 tracking-tight group-hover:text-navy-900 transition-colors duration-300">{entry.title}</h3>
-                <p className="text-charcoal-400 text-sm line-clamp-2 font-body leading-relaxed">{entry.excerpt || entry.content}</p>
+                <p className="text-charcoal-600 text-sm line-clamp-2 font-body leading-relaxed">{entry.excerpt || entry.content}</p>
                 <Link to="/journal" className="inline-flex items-center gap-1.5 text-charcoal-900 text-[11px] tracking-widest uppercase font-medium mt-4 font-body hover:gap-2.5 transition-all duration-300">
-                  Read More <ArrowRight size={11} />
+                  Read More<span className="sr-only"> about {entry.title}</span> <ArrowRight size={11} />
                 </Link>
               </div>
             ))}
@@ -398,7 +392,7 @@ export function HomePage() {
             <h2 className="text-3xl md:text-4xl font-light font-display tracking-tight">
               The Cambridgeshire Difference
             </h2>
-            <p className="text-charcoal-400 max-w-md mx-auto font-body text-sm">
+            <p className="text-charcoal-700 max-w-md mx-auto font-body text-sm font-medium">
               We combine skilled craftsmanship, quality materials and reliable service to deliver results you can trust.
             </p>
           </div>
@@ -412,7 +406,7 @@ export function HomePage() {
                     <Icon className="w-5 h-5 text-navy-800" />
                   </div>
                   <h3 className="text-lg font-medium font-display mb-3 tracking-tight">{item.title}</h3>
-                  <p className="text-charcoal-400 text-sm leading-relaxed font-body">{item.description}</p>
+                  <p className="text-charcoal-600 text-sm leading-relaxed font-body">{item.description}</p>
                 </div>
               );
             })}

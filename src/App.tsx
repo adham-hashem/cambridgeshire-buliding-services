@@ -36,6 +36,8 @@ import { PortfolioPage } from './pages/public/PortfolioPage';
 import { AboutPage } from './pages/public/AboutPage';
 import { ContactPage } from './pages/public/ContactPage';
 import { JournalPage } from './pages/public/JournalPage';
+import { PrivacyPolicyPage } from './pages/public/PrivacyPolicyPage';
+import { TermsOfServicePage } from './pages/public/TermsOfServicePage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -76,6 +78,8 @@ function AppRoutes() {
         <Route path="about" element={<AboutPage />} />
         <Route path="journal" element={<JournalPage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="privacy" element={<PrivacyPolicyPage />} />
+        <Route path="terms" element={<TermsOfServicePage />} />
       </Route>
 
       {/* Admin (unchanged) */}

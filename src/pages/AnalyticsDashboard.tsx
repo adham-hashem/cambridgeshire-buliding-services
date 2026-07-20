@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { BarChart3, Eye, MessageSquare, TrendingUp, ArrowUpRight, Calendar } from 'lucide-react';
+import { BarChart3, MessageSquare, TrendingUp, ArrowUpRight, Calendar } from 'lucide-react';
 
 
 interface Stat {
@@ -37,9 +37,7 @@ export function AnalyticsDashboard() {
         supabase.from('analytics').select('*'),
       ]);
 
-      const visitorCount = analyticsRes.data?.find(
-        (a: any) => a.metric_type === 'visitors'
-      )?.metric_value || 0;
+
 
       const conversionRate = analyticsRes.data?.find(
         (a: any) => a.metric_type === 'conversion'

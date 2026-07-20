@@ -6,13 +6,9 @@ import {
   BookOpen,
   FileText,
   LogOut,
-  Mail,
   Menu,
-  MessageSquare,
   Settings,
-  Star,
   Home,
-  Users,
   X,
 } from 'lucide-react';
 

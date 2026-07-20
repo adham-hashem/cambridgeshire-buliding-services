@@ -62,7 +62,6 @@ export function ProjectsPage() {
   const [formData, setFormData] = useState(emptyForm);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const coverRef = useRef<HTMLInputElement>(null);

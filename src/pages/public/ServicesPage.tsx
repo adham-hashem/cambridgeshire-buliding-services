@@ -3,8 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import {
-  ArrowRight, TreePine, Layers, Bath, Home, DoorOpen,
-  Hammer, Droplets, Wrench,
+  ArrowRight,
 } from 'lucide-react';
 
 interface Service {

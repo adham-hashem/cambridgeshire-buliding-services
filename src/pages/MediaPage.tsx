@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Upload, Trash2, Image, Video, Cloud } from 'lucide-react';
+import { Trash2, Image, Video, Cloud } from 'lucide-react';
 
 interface MediaItem {
   id: string;
