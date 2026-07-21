@@ -145,7 +145,7 @@ const phone = settings?.phone || '+44 7383 608438';
 
         {/* Announcement Ticker */}
         <div className="relative overflow-hidden bg-navy-800 border-t border-navy-700/50">
-          <div className="flex whitespace-nowrap animate-marquee">
+          <div className="flex whitespace-nowrap w-max animate-marquee hover:[animation-play-state:paused]">
             {[...announcementMessages, ...announcementMessages].map((msg, i) => (
               <span key={i} className="inline-flex items-center gap-3 px-8 py-2 text-[11px] tracking-[0.2em] uppercase font-body font-medium text-cream-100/90">
                 <span className="text-gold-400 text-[8px]">◆</span>
