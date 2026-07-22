@@ -13,6 +13,8 @@ interface JournalArticle {
   seo_title: string;
   seo_description: string;
   created_at: string;
+  image_url?: string;
+  excerpt?: string;
 }
 
 export function JournalPage() {
@@ -28,6 +30,8 @@ export function JournalPage() {
     published: false,
     seo_title: '',
     seo_description: '',
+    image_url: '',
+    excerpt: '',
   });
 
   const categories = ['Seasonal Tips', 'Garden Design', 'Maintenance', 'Inspiration', 'Trends'];
@@ -118,6 +122,8 @@ export function JournalPage() {
       published: false,
       seo_title: '',
       seo_description: '',
+      image_url: '',
+      excerpt: '',
     });
     setEditingId(null);
     setShowForm(false);
@@ -130,8 +136,10 @@ export function JournalPage() {
       content: article.content,
       category: article.category,
       published: article.published,
-      seo_title: article.seo_title,
-      seo_description: article.seo_description,
+      seo_title: article.seo_title || '',
+      seo_description: article.seo_description || '',
+      image_url: article.image_url || '',
+      excerpt: article.excerpt || '',
     });
     setEditingId(article.id);
     setShowForm(true);
@@ -246,6 +254,27 @@ export function JournalPage() {
               value={formData.slug}
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
               className="input-premium"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[#1f2937] font-semibold mb-2">Cover Image URL</label>
+            <input
+              type="url"
+              value={formData.image_url}
+              onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+              className="input-premium"
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[#1f2937] font-semibold mb-2">Excerpt (Short Description)</label>
+            <textarea
+              value={formData.excerpt}
+              onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+              className="textarea-premium h-24"
+              placeholder="A brief summary of the article..."
             />
           </div>
 

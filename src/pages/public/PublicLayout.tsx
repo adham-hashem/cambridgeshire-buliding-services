@@ -52,7 +52,7 @@ export function PublicLayout() {
   'Free quotations with no obligation.',
 ];
 
-const phone = settings?.phone || '+44 7383 608438';
+  const phone = settings?.phone || '07383608438';
   const email = settings?.email || 'cambridgeshirebuildingservices@gmail.com';
   const address = settings?.address || 'Cambridge, UK';
   const companyName = settings?.company_name || 'Cambridgeshire Building Services';

@@ -497,8 +497,8 @@ export function HomePage() {
             <Link to="/contact" className="px-8 py-3.5 bg-navy-800 hover:bg-navy-900 text-white font-medium text-[11px] tracking-[0.2em] uppercase transition-all duration-300 font-body inline-flex items-center gap-2">
               Get Free Quote <ArrowRight size={14} />
             </Link>
-            <a href="tel:+447383608438" className="px-8 py-3.5 bg-transparent text-white/70 font-medium text-[11px] tracking-[0.2em] uppercase border border-white/20 hover:border-white/40 hover:text-white transition-all duration-300 font-body inline-flex items-center gap-2">
-              <Phone size={14} /> +44 7383 608438
+            <a href="tel:07383608438" className="px-8 py-3.5 bg-transparent text-white/70 font-medium text-[11px] tracking-[0.2em] uppercase border border-white/20 hover:border-white/40 hover:text-white transition-all duration-300 font-body inline-flex items-center gap-2">
+              <Phone size={14} /> 07383608438
             </a>
           </div>
         </div>

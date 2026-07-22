@@ -94,7 +94,7 @@ export function TermsOfServicePage() {
           <div className="bg-cream-100 p-6 rounded-lg border border-charcoal-200/50 space-y-2 font-body text-sm text-charcoal-700">
             <p><strong>Company:</strong> Cambridgeshire Building Services</p>
             <p><strong>Email:</strong> <a href="mailto:cambridgeshirebuildingservices@gmail.com" className="text-navy-800 hover:text-gold-500 transition-colors font-medium">cambridgeshirebuildingservices@gmail.com</a></p>
-            <p><strong>Phone:</strong> <a href="tel:+447383608438" className="text-navy-800 hover:text-gold-500 transition-colors font-medium">+44 7383 608438</a></p>
+            <p><strong>Phone:</strong> <a href="tel:07383608438" className="text-navy-800 hover:text-gold-500 transition-colors font-medium">07383608438</a></p>
             <p><strong>Location:</strong> Cambridge, United Kingdom</p>
           </div>
         </>

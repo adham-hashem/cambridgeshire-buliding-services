@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { ArrowRight, Clock, BookOpen } from 'lucide-react';
 import { PremiumModal } from '../../components/PremiumModal';
 
-interface JournalEntry { id: string; title: string; slug: string; category: string; content: string; excerpt: string; published_at: string; }
+interface JournalEntry { id: string; title: string; slug: string; category: string; content: string; excerpt: string; published_at: string; image_url?: string; }
 
 function useInView(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
@@ -109,7 +109,7 @@ export function JournalPage() {
             <div className="group bg-white rounded-2xl border border-charcoal-100 overflow-hidden hover-lift">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="h-64 md:h-auto overflow-hidden">
-                  <img src={journalImages[0]} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img src={featured.image_url || journalImages[0]} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-8 md:p-10 flex flex-col justify-center">
                   <span className="badge-cream text-[10px]">{featured.category}</span>
@@ -136,7 +136,7 @@ export function JournalPage() {
             {rest.map((entry, i) => (
               <div key={entry.id} className={`group bg-cream-50 rounded-2xl border border-charcoal-100 overflow-hidden hover-lift ${grid.inView ? 'animate-reveal-up' : 'opacity-0'}`} style={{ animationDelay: `${i * 80}ms` }}>
                 <div className="h-44 overflow-hidden">
-                  <img src={journalImages[(i + 1) % journalImages.length]} alt={entry.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img src={entry.image_url || journalImages[(i + 1) % journalImages.length]} alt={entry.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-5">
                   <span className="badge-cream text-[10px]">{entry.category}</span>
