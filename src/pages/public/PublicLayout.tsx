@@ -184,7 +184,7 @@ const phone = settings?.phone || '+44 7383 608438';
                 <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300" aria-label="Visit our Instagram page">
                   <Instagram size={14} />
                 </a>
-                <a href="https://www.facebook.com" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300" aria-label="Visit our Facebook page">
+                <a href={settings?.social_facebook || "https://www.facebook.com/share/1EFQ3AFoBn"} target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300" aria-label="Visit our Facebook page">
                   <Facebook size={14} />
                 </a>
               </div>

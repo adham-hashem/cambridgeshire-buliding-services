@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '../../lib/supabase';
 import { ArrowRight, Clock, BookOpen } from 'lucide-react';
+import { PremiumModal } from '../../components/PremiumModal';
 
 interface JournalEntry { id: string; title: string; slug: string; category: string; content: string; excerpt: string; published_at: string; }
 
@@ -39,6 +40,7 @@ export function JournalPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<JournalEntry | null>(null);
   const grid = useInView();
 
   useEffect(() => {
@@ -117,8 +119,8 @@ export function JournalPage() {
                     <Clock size={14} />
                     <span>{featured.published_at ? new Date(featured.published_at).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}</span>
                   </div>
-                  <button className="text-navy-800 font-medium flex items-center gap-1.5 hover:gap-2.5 transition-all font-body text-[11px] tracking-widest uppercase">
-                    Read Article <ArrowRight size={15} />
+                  <button onClick={() => setSelectedArticle(featured)} className="text-navy-800 font-medium flex items-center gap-1.5 hover:gap-2.5 transition-all font-body text-[11px] tracking-widest uppercase">
+                    Learn More <ArrowRight size={15} />
                   </button>
                 </div>
               </div>
@@ -140,10 +142,13 @@ export function JournalPage() {
                   <span className="badge-cream text-[10px]">{entry.category}</span>
                   <h3 className="text-base font-medium font-display mt-2 mb-1.5 group-hover:text-navy-800 transition-colors line-clamp-2 tracking-tight">{entry.title}</h3>
                   <p className="text-charcoal-500 text-sm line-clamp-2 font-body leading-relaxed">{entry.excerpt || entry.content}</p>
-                  <div className="flex items-center gap-1.5 text-charcoal-400 text-xs font-body mt-3">
+                  <div className="flex items-center gap-1.5 text-charcoal-400 text-xs font-body mt-3 mb-4">
                     <Clock size={12} />
                     <span>{entry.published_at ? new Date(entry.published_at).toLocaleDateString('en-GB', { year: 'numeric', month: 'long' }) : ''}</span>
                   </div>
+                  <button onClick={() => setSelectedArticle(entry)} className="text-navy-800 font-medium flex items-center gap-1.5 hover:gap-2.5 transition-all font-body text-[11px] tracking-widest uppercase">
+                    Learn More <ArrowRight size={12} />
+                  </button>
                 </div>
               </div>
             ))}
@@ -172,6 +177,25 @@ export function JournalPage() {
           )}
         </div>
       </section>
+
+      <PremiumModal isOpen={!!selectedArticle} onClose={() => setSelectedArticle(null)} title={selectedArticle?.title || ''} size="lg">
+        {selectedArticle && (
+          <div className="space-y-6">
+            <div className="flex items-center gap-2 text-charcoal-400 text-sm font-body mb-6 pb-6 border-b border-charcoal-100">
+              <span className="badge-cream text-[10px]">{selectedArticle.category}</span>
+              <span>•</span>
+              <Clock size={14} />
+              <span>{selectedArticle.published_at ? new Date(selectedArticle.published_at).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}</span>
+            </div>
+            
+            <div className="prose prose-lg max-w-none font-body text-charcoal-600 prose-headings:font-display prose-headings:text-navy-800 prose-a:text-gold-600">
+              {selectedArticle.content.split('\n').map((paragraph, idx) => (
+                paragraph.trim() ? <p key={idx}>{paragraph}</p> : <br key={idx} />
+              ))}
+            </div>
+          </div>
+        )}
+      </PremiumModal>
     </div>
   );
 }
