@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Mail as MailIcon, MapPin, Instagram, Facebook, Clock } from 'lucide-react';
+import { Menu, X, Phone, Mail as MailIcon, MapPin, Instagram, Facebook, Clock, Star } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
 interface SiteSettings {
@@ -56,7 +56,7 @@ export function PublicLayout() {
   const email = settings?.email || 'cambridgeshirebuildingservices@gmail.com';
   const address = settings?.address || 'Cambridge, UK';
   const companyName = settings?.company_name || 'Cambridgeshire Building Services';
-  const hours = settings?.business_hours || 'Mon–Fri: 7:30am – 6:00pm, Sat: 8:00am – 2:00pm';
+  const hours = settings?.business_hours || 'Mon–Sun: 7:30am – 6:00pm';
 
   return (
     <div className="bg-cream-50 min-h-screen flex flex-col">
@@ -180,12 +180,25 @@ export function PublicLayout() {
               <p className="text-charcoal-400 text-sm leading-relaxed font-body max-w-xs">
                 Professional building, renovation, and property improvement services. From kitchens and bathrooms to tiling, flooring, driveways and landscaping — we deliver exceptional workmanship across Cambridgeshire.
               </p>
-              <div className="flex items-center gap-3 pt-1">
-                <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300" aria-label="Visit our Instagram page">
-                  <Instagram size={14} />
-                </a>
-                <a href={settings?.social_facebook || "https://www.facebook.com/share/1EFQ3AFoBn"} target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300" aria-label="Visit our Facebook page">
-                  <Facebook size={14} />
+              <div className="flex flex-col gap-5 pt-1">
+                <div className="flex items-center gap-3">
+                  <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300" aria-label="Visit our Instagram page">
+                    <Instagram size={14} />
+                  </a>
+                  <a href={settings?.social_facebook || "https://www.facebook.com/share/1EFQ3AFoBn"} target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-charcoal-700 hover:border-charcoal-500 hover:text-white transition-all duration-300" aria-label="Visit our Facebook page">
+                    <Facebook size={14} />
+                  </a>
+                </div>
+                <a href="https://g.page/r/Cf4dGoWN_wn0EAE/review" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white text-sm font-body transition-all group w-fit">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-4 h-4 bg-white rounded-full p-[2px]" />
+                  <span className="font-medium">Review us on Google</span>
+                  <div className="flex text-yellow-400 gap-0.5 ml-1">
+                    <Star size={12} fill="currentColor" />
+                    <Star size={12} fill="currentColor" />
+                    <Star size={12} fill="currentColor" />
+                    <Star size={12} fill="currentColor" />
+                    <Star size={12} fill="currentColor" />
+                  </div>
                 </a>
               </div>
             </div>

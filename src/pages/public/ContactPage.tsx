@@ -5,7 +5,7 @@ import { supabase } from '../../lib/supabase';
 import { sendQuoteToTelegram } from '../../lib/telegram';
 import {
   Send, Phone, Mail as MailIcon, MapPin, Clock,
-  Upload, X, Check, AlertCircle,
+  Upload, X, Check, AlertCircle, Star
 } from 'lucide-react';
 
 interface QuoteFormSettings {
@@ -529,14 +529,33 @@ export function ContactPage() {
                     </div>
                     <div>
                       <p className="text-charcoal-400 text-xs font-body">Business Hours</p>
-                      <p className="text-charcoal-800 font-medium text-sm font-body">Mon–Fri: 7:30am – 6:00pm</p>
-                      <p className="text-charcoal-800 font-medium text-sm font-body">Sat: 8:00am – 2:00pm</p>
+                      <p className="text-charcoal-800 font-medium text-sm font-body">Monday – Sunday</p>
+                      <p className="text-charcoal-800 font-medium text-sm font-body">7:30am – 6:00pm</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Map removed by user request */}
+              {/* Google Review Card */}
+              <div className="bg-white rounded-2xl border border-charcoal-100 p-8 text-center space-y-4 hover:border-gold-500/30 transition-colors group">
+                <div className="w-16 h-16 bg-cream-50 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-8 h-8" />
+                </div>
+                <h3 className="text-lg font-bold font-display text-navy-800">Review Us on Google</h3>
+                <div className="flex justify-center text-yellow-400 gap-1 my-2">
+                  <Star size={20} fill="currentColor" />
+                  <Star size={20} fill="currentColor" />
+                  <Star size={20} fill="currentColor" />
+                  <Star size={20} fill="currentColor" />
+                  <Star size={20} fill="currentColor" />
+                </div>
+                <p className="text-charcoal-500 text-sm font-body mb-6">
+                  Happy with our service? We'd love to hear your feedback on our Google Business page.
+                </p>
+                <a href="https://g.page/r/Cf4dGoWN_wn0EAE/review" target="_blank" rel="noreferrer" className="btn-primary w-full justify-center">
+                  Leave a Review
+                </a>
+              </div>
             </div>
           </div>
         </div>
