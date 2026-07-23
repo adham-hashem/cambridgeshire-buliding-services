@@ -529,8 +529,7 @@ export function ContactPage() {
                     </div>
                     <div>
                       <p className="text-charcoal-400 text-xs font-body">Business Hours</p>
-                      <p className="text-charcoal-800 font-medium text-sm font-body">Monday – Sunday</p>
-                      <p className="text-charcoal-800 font-medium text-sm font-body">7:30am – 6:00pm</p>
+                      <p className="text-charcoal-800 font-medium text-sm font-body">Whole the week</p>
                     </div>
                   </div>
                 </div>

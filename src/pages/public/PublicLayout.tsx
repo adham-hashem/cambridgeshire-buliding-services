@@ -56,7 +56,7 @@ export function PublicLayout() {
   const email = settings?.email || 'cambridgeshirebuildingservices@gmail.com';
   const address = settings?.address || 'Cambridge, UK';
   const companyName = settings?.company_name || 'Cambridgeshire Building Services';
-  const hours = settings?.business_hours || 'Mon–Sun: 7:30am – 6:00pm';
+  const hours = settings?.business_hours || 'Whole the week';
 
   return (
     <div className="bg-cream-50 min-h-screen flex flex-col">
