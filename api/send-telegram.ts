@@ -10,16 +10,16 @@ function escapeHtml(text: string | null | undefined): string {
     .replace(/>/g, '&gt;');
 }
 
-async function sendTelegramNotification(message: string, attempt = 1, maxAttempts = 3) {
+async function sendTelegramNotification(message: string, attachmentUrls: string[] = [], attempt = 1, maxAttempts = 3) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_ADMIN_CHAT_ID;
+  const chatIds = (process.env.TELEGRAM_ADMIN_CHAT_ID || '').split(',').map(id => id.trim()).filter(Boolean);
 
-  if (!token || !chatId) {
-    console.log('[Telegram Notifier] Bot Token or Chat ID not configured. Skipping notification.');
-    return;
+  if (!token || chatIds.length === 0) {
+    throw new Error('Telegram credentials are not configured');
   }
 
   try {
+    for (const chatId of chatIds) {
     const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: {
@@ -42,7 +42,19 @@ async function sendTelegramNotification(message: string, attempt = 1, maxAttempt
       throw new Error(`API responded with ok=false: ${JSON.stringify(resData)}`);
     }
 
-    console.log('[Telegram Notifier] Notification sent successfully.');
+    for (const url of attachmentUrls) {
+      const isImage = /\.(jpg|jpeg|png|webp)(\?|$)/i.test(url);
+      const method = isImage ? 'sendPhoto' : 'sendDocument';
+      const attachmentResponse = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, [isImage ? 'photo' : 'document']: url }),
+      });
+      if (!attachmentResponse.ok || !(await attachmentResponse.json()).ok) {
+        throw new Error('Telegram attachment failed');
+      }
+    }
+    }
   } catch (error: any) {
     console.error(`[Telegram Notifier] Error (Attempt ${attempt}/${maxAttempts}):`, error.message || error);
 
@@ -50,9 +62,9 @@ async function sendTelegramNotification(message: string, attempt = 1, maxAttempt
       const delay = attempt * 2000;
       console.log(`[Telegram Notifier] Retrying in ${delay}ms...`);
       await new Promise(resolve => setTimeout(resolve, delay));
-      return sendTelegramNotification(message, attempt + 1, maxAttempts);
+      return sendTelegramNotification(message, attachmentUrls, attempt + 1, maxAttempts);
     } else {
-      console.error('[Telegram Notifier] Max attempts reached. Notification failed.');
+      throw error;
     }
   }
 }
@@ -85,7 +97,7 @@ export default async function handler(req: any, res: any) {
                     `📝 <b>Project Description:</b>\n${messageText}\n\n` +
                     `📅 <i>Submitted at: ${new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' })} (UK Time)</i>`;
 
-    await sendTelegramNotification(message);
+    await sendTelegramNotification(message, Array.isArray(data.attachmentUrls) ? data.attachmentUrls : []);
 
     return res.status(200).json({ success: true });
   } catch (error: any) {
